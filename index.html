@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're Invited 🎈</title>
+  <meta name="description" content="You're invited to a birthday celebration — please RSVP!" />
+
+  <!-- Friendly, chunky display + soft rounded body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎈</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <!-- Confetti lives here -->
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <!-- Decorative floating balloons -->
+  <div class="balloons" aria-hidden="true">
+    <span class="balloon b1"></span>
+    <span class="balloon b2"></span>
+    <span class="balloon b3"></span>
+    <span class="balloon b4"></span>
+    <span class="balloon b5"></span>
+  </div>
+
+  <main class="card" id="card">
+    <!-- ---------- Invitation ---------- -->
+    <section class="invite" id="invite">
+      <p class="eyebrow">You're invited!</p>
+
+      <h1 class="title">
+        <span id="honoree">Bear</span>
+        <span class="age-line" id="ageLine">
+          <span id="tagline">is turning</span>
+          <span class="age" id="age">5</span>!
+        </span>
+      </h1>
+
+      <p class="intro" id="intro">We'd be over the moon if you'd come celebrate with us!</p>
+
+      <ul class="details">
+        <li><span class="ico">🗓️</span><span id="date">Saturday</span></li>
+        <li><span class="ico">⏰</span><span id="time">2:00 in the afternoon</span></li>
+        <li><span class="ico">📍</span><span id="location">The Park</span></li>
+      </ul>
+
+      <!-- ---------- RSVP form ---------- -->
+      <form class="rsvp" id="rsvpForm" novalidate>
+        <h2 class="rsvp-heading">Will you join the fun?</h2>
+
+        <label class="field">
+          <span class="label-text">Your name</span>
+          <input type="text" id="name" name="name" autocomplete="name"
+                 placeholder="e.g. The Garcia family" required />
+        </label>
+
+        <fieldset class="field attending">
+          <legend class="label-text">Can you make it?</legend>
+          <div class="choices">
+            <label class="choice">
+              <input type="radio" name="attending" value="yes" required />
+              <span class="pill">Yes! 🎉</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="attending" value="no" />
+              <span class="pill">Can't make it 💛</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <label class="field" id="guestsField">
+          <span class="label-text">How many of you are coming?</span>
+          <input type="number" id="guests" name="guests" min="1" max="50"
+                 inputmode="numeric" placeholder="2" value="" />
+        </label>
+
+        <label class="field">
+          <span class="label-text">A note for us <span class="optional">(allergies, a birthday wish, anything!)</span></span>
+          <textarea id="note" name="note" rows="3"
+                    placeholder="We can't wait! 🥳"></textarea>
+        </label>
+
+        <p class="error" id="error" role="alert" hidden></p>
+
+        <button type="submit" class="submit" id="submitBtn">
+          <span class="btn-label">Send my RSVP</span>
+        </button>
+
+        <p class="rsvp-by" id="rsvpBy">Kindly reply soon</p>
+      </form>
+    </section>
+
+    <!-- ---------- Thank-you (revealed after submit) ---------- -->
+    <section class="thanks" id="thanks" hidden>
+      <div class="thanks-emoji" id="thanksEmoji">🎉</div>
+      <h2 class="thanks-title" id="thanksTitle">Hooray — you're on the list!</h2>
+      <p class="thanks-msg" id="thanksMsg">Thank you for letting us know. We can't wait to celebrate with you!</p>
+      <button type="button" class="ghost" id="againBtn">Send another RSVP</button>
+    </section>
+  </main>
+
+  <footer class="footer">made with 💛 for someone special</footer>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
