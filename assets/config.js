@@ -16,6 +16,15 @@ window.EVENT_CONFIG = {
   locationUrl: "",                 // optional Google Maps link ("" to hide)
   rsvpBy: "Kindly reply by July 5th",
 
+  /* ---- "Add to calendar" (optional) --------------------------
+     Fill both to show calendar buttons on the thank-you screen.
+     Use 24-hour local time, format: "YYYY-MM-DDTHH:MM:SS".
+     Leave either blank ("") to hide the buttons.            */
+  calendar: {
+    start: "2026-07-12T14:00:00",
+    end:   "2026-07-12T17:00:00",
+  },
+
   /* ---- Browser tab title -------------------------------------- */
   pageTitle: "Bear's Birthday 🎈",
 

@@ -56,6 +56,57 @@
     if (input && input.nextElementSibling) input.nextElementSibling.textContent = label;
   }
 
+  /* ---------- 1b. "Add to calendar" ---------- */
+  var calReady = setupCalendar();
+  function setupCalendar() {
+    var c = cfg.calendar || {};
+    if (!c.start || !c.end) return false;
+
+    var title = (cfg.honoree || "Birthday") +
+      (cfg.turningAge != null ? "'s " + ordinal(cfg.turningAge) + " Birthday" : "'s Birthday") + " 🎉";
+    var details = cfg.intro || "We can't wait to celebrate with you!";
+    var loc = cfg.location || "";
+    var start = stampCal(c.start), end = stampCal(c.end);
+    if (!start || !end) return false;
+
+    // Google Calendar
+    var g = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      "&text=" + encodeURIComponent(title) +
+      "&dates=" + start + "/" + end +
+      "&details=" + encodeURIComponent(details) +
+      "&location=" + encodeURIComponent(loc);
+    $("calGoogle").href = g;
+
+    // Downloadable .ics for Apple Calendar / Outlook
+    var ics = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//rsvp//birthday//EN",
+      "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
+      "UID:" + start + "-" + Math.abs(hash(title)) + "@rsvp",
+      "DTSTAMP:" + stampCal(new Date().toISOString()),
+      "DTSTART:" + start, "DTEND:" + end,
+      "SUMMARY:" + esc(title), "DESCRIPTION:" + esc(details), "LOCATION:" + esc(loc),
+      "END:VEVENT", "END:VCALENDAR",
+    ].join("\r\n");
+    var blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+    var icsEl = $("calIcs");
+    icsEl.href = URL.createObjectURL(blob);
+    icsEl.download = slug(cfg.honoree || "event") + "-birthday.ics";
+    return true;
+  }
+  // "2026-07-12T14:00:00" -> "20260712T140000" (floating local time)
+  function stampCal(iso) {
+    if (!iso) return "";
+    var m = String(iso).match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/);
+    return m ? m[1]+m[2]+m[3]+"T"+m[4]+m[5]+(m[6]||"00") : "";
+  }
+  function ordinal(n) {
+    var s = ["th","st","nd","rd"], v = n % 100;
+    return n + (s[(v-20)%10] || s[v] || s[0]);
+  }
+  function esc(s) { return String(s).replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n"); }
+  function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+  function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h*31 + s.charCodeAt(i))|0; return h; }
+
   /* ---------- 2. Show/hide guest count based on attendance ---------- */
   var form = $("rsvpForm");
   var guestsField = $("guestsField");
@@ -143,6 +194,8 @@
       $("thanksTitle").textContent = "Thank you for letting us know";
       $("thanksMsg").textContent = "We'll miss you, but we totally understand. Sending a big hug your way!";
     }
+    // Offer "add to calendar" only to guests who are coming
+    $("calBox").hidden = !(coming && calReady);
     burstConfetti();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }

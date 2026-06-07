@@ -6,6 +6,16 @@
   <title>You're Invited 🎈</title>
   <meta name="description" content="You're invited to a birthday celebration — please RSVP!" />
 
+  <!-- Link-preview card (shown when you share the link in chats/social).
+       NOTE: crawlers don't run JavaScript, so edit these by hand to match
+       your event — see README "Pretty link previews". -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="You're Invited! 🎈" />
+  <meta property="og:description" content="Come celebrate a birthday with us — tap to RSVP!" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="You're Invited! 🎈" />
+  <meta name="twitter:description" content="Come celebrate a birthday with us — tap to RSVP!" />
+
   <!-- Friendly, chunky display + soft rounded body -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -99,6 +109,15 @@
       <div class="thanks-emoji" id="thanksEmoji">🎉</div>
       <h2 class="thanks-title" id="thanksTitle">Hooray — you're on the list!</h2>
       <p class="thanks-msg" id="thanksMsg">Thank you for letting us know. We can't wait to celebrate with you!</p>
+
+      <div class="cal" id="calBox" hidden>
+        <p class="cal-label">Pop it in your calendar so you don't forget 🗓️</p>
+        <div class="cal-btns">
+          <a class="cal-btn" id="calGoogle" target="_blank" rel="noopener">Google Calendar</a>
+          <a class="cal-btn" id="calIcs" download>Apple / Outlook</a>
+        </div>
+      </div>
+
       <button type="button" class="ghost" id="againBtn">Send another RSVP</button>
     </section>
   </main>

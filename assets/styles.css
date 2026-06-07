@@ -299,6 +299,32 @@ textarea { resize: vertical; min-height: 64px; }
 }
 .thanks-msg { color: var(--ink-soft); font-size: 1.05rem; margin: 0 auto 22px; max-width: 32ch; }
 
+/* ---------- Add to calendar ---------- */
+.cal {
+  margin: 4px auto 22px;
+  padding: 16px;
+  background: linear-gradient(180deg, #fff 0%, #fff7ee 100%);
+  border: 2px dashed var(--sky-deep);
+  border-radius: var(--radius-sm);
+}
+.cal-label { margin: 0 0 12px; font-weight: 700; color: var(--ink); font-size: 0.95rem; }
+.cal-btns { display: flex; gap: 10px; justify-content: center; }
+.cal-btn {
+  flex: 1;
+  font-family: "Baloo 2", cursive;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: var(--teal-dark);
+  background: var(--white);
+  border: 2px solid var(--teal);
+  border-radius: var(--radius-sm);
+  padding: 11px 8px;
+  transition: all 0.18s;
+}
+.cal-btn:hover { background: var(--teal); color: #fff; transform: translateY(-2px); }
+@media (max-width: 420px) { .cal-btns { flex-direction: column; } }
+
 /* ---------- Footer ---------- */
 .footer {
   position: relative;

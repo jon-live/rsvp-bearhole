@@ -135,6 +135,40 @@ Commit & push — GitHub Pages redeploys automatically. That's it. 💛
 
 ---
 
+## 🗓️ "Add to calendar" buttons
+
+On the thank-you screen, guests who are coming get **Google Calendar** and
+**Apple/Outlook (.ics)** buttons. Control them in `assets/config.js`:
+
+```js
+calendar: {
+  start: "2026-07-12T14:00:00",   // 24-hour local time
+  end:   "2026-07-12T17:00:00",
+},
+```
+
+Leave either value blank (`""`) to hide the buttons.
+
+---
+
+## 🔗 Pretty link previews
+
+When you share the link in a text/WhatsApp/iMessage, a preview card shows.
+Because link crawlers don't run JavaScript, edit these **by hand** near the top
+of `index.html` (the `og:` and `twitter:` `<meta>` tags) to match your event:
+
+```html
+<meta property="og:title" content="Bear is turning 5! 🎈" />
+<meta property="og:description" content="Sat July 12 — come celebrate! Tap to RSVP." />
+```
+
+To add a preview image, drop a ~1200×630 image in the repo and add:
+```html
+<meta property="og:image" content="https://jon-live.github.io/rsvp-bearhole/preview.png" />
+```
+
+---
+
 ## 🎨 Want a different look?
 
 The whole palette lives at the top of `assets/styles.css` under `:root`.
