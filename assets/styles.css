@@ -195,6 +195,20 @@ body {
 .details a { color: var(--forest); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 1px; }
 .details a:hover { color: var(--gold-deep); }
 
+/* ---------- RSVPs closed notice ---------- */
+.closed {
+  margin: 30px auto 4px;
+  padding: 24px;
+  max-width: 36ch;
+  background: var(--ivory-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
 /* ---------- Form ---------- */
 .rsvp { margin-top: 34px; text-align: left; }
 .rsvp-heading {
