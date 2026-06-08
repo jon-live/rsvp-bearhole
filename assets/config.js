@@ -10,20 +10,28 @@ window.EVENT_CONFIG = {
   intro: "We'd be over the moon if you'd come celebrate with us!",
 
   /* ---- When & where ------------------------------------------- */
-  date: "Saturday, July 12th, 2026",
-  time: "2:00 – 5:00 in the afternoon",
-  location: "The Treehouse Park, 123 Maple Lane",
+  date: "Sunday, June 21st, 2026",
+  time: "10:00 AM – 12:00 noon",
+  location: "To be announced",
   locationUrl: "",                 // optional Google Maps link ("" to hide)
-  rsvpBy: "Kindly reply by July 5th",
+  rsvpBy: "Kindly reply by June 18th",
 
   /* ---- "Add to calendar" (optional) --------------------------
      Fill both to show calendar buttons on the thank-you screen.
      Use 24-hour local time, format: "YYYY-MM-DDTHH:MM:SS".
      Leave either blank ("") to hide the buttons.            */
   calendar: {
-    start: "2026-07-12T14:00:00",
-    end:   "2026-07-12T17:00:00",
+    start: "2026-06-21T10:00:00",
+    end:   "2026-06-21T12:00:00",
   },
+
+  /* ---- Close RSVPs after a cutoff (optional) -----------------
+     Once this moment passes (guest's local time), the form is
+     hidden and a polite "RSVPs are closed" notice is shown.
+     Leave blank ("") to fall back to the event start time above;
+     set to null to never close.                              */
+  rsvpDeadline: "",
+  closedMessage: "RSVPs are now closed — this celebration has already taken place. Thank you for your love! 💛",
 
   /* ---- Browser tab title -------------------------------------- */
   pageTitle: "Charles's 3rd Birthday 🎈",

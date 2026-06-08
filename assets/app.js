@@ -118,6 +118,24 @@
     if (e.target.name === "attending") syncGuests();
   });
 
+  /* ---------- 2b. Close RSVPs once the event has passed ---------- */
+  var closed = isRsvpClosed();
+  if (closed) {
+    form.hidden = true;
+    var notice = $("closedNotice");
+    notice.textContent = cfg.closedMessage || "RSVPs are now closed.";
+    notice.hidden = false;
+  }
+  function isRsvpClosed() {
+    var deadline = cfg.rsvpDeadline;
+    if (deadline === null) return false;                          // never close
+    if (!deadline) deadline = cfg.calendar && cfg.calendar.start; // fall back to start time
+    if (!deadline) return false;
+    var when = new Date(deadline);
+    if (isNaN(when.getTime())) return false;
+    return new Date() > when;
+  }
+
   /* ---------- 3. Submit ---------- */
   var error = $("error");
   var submitBtn = $("submitBtn");
@@ -125,6 +143,7 @@
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     hideError();
+    if (closed) return; // safety net — form is already hidden when closed
 
     var name = $("name").value.trim();
     var attendingEl = document.querySelector('input[name="attending"]:checked');
