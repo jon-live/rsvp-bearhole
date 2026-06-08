@@ -46,15 +46,13 @@
     }
   }
 
-  // Reflect the friendly yes/no labels from config onto the pills
   var gf = cfg.googleForm || {};
-  setPillLabel("yes", gf.attendingYes);
-  setPillLabel("no", gf.attendingNo);
-  function setPillLabel(value, label) {
-    if (!label) return;
-    var input = document.querySelector('input[name="attending"][value="' + value + '"]');
-    if (input && input.nextElementSibling) input.nextElementSibling.textContent = label;
-  }
+  // Exact text each choice must send to match the Google Form options.
+  var attendingMap = {
+    yes:   gf.attendingYes   || "Yes",
+    no:    gf.attendingNo    || "No",
+    maybe: gf.attendingMaybe || "Maybe",
+  };
 
   /* ---------- 1b. "Add to calendar" ---------- */
   var calReady = setupCalendar();
@@ -112,7 +110,7 @@
   var guestsField = $("guestsField");
   function syncGuests() {
     var checked = document.querySelector('input[name="attending"]:checked');
-    var coming = checked && checked.value === "yes";
+    var coming = checked && checked.value !== "no";
     guestsField.classList.toggle("hidden", !coming);
   }
   syncGuests();
@@ -133,12 +131,12 @@
     if (!name) return showError("Please add your name 🙂");
     if (!attendingEl) return showError("Let us know if you can make it!");
 
-    var attending = attendingEl.value; // "yes" | "no"
+    var attending = attendingEl.value; // "yes" | "no" | "maybe"
     var payload = {
       name: name,
-      attending: attending === "yes" ? (gf.attendingYes || "Yes")
-                                     : (gf.attendingNo || "No"),
-      guests: attending === "yes" ? ($("guests").value.trim() || "1") : "",
+      attending: attendingMap[attending] || attending,
+      // "How Many" is required in the form, so always send a number.
+      guests: attending === "no" ? "0" : ($("guests").value.trim() || "1"),
       note: $("note").value.trim(),
     };
 
@@ -146,7 +144,7 @@
     submitBtn.querySelector(".btn-label").textContent = "Sending…";
 
     sendToGoogleForm(payload).then(function () {
-      celebrate(attending === "yes");
+      celebrate(attending);
     });
   });
 
@@ -184,18 +182,22 @@
     });
   }
 
-  function celebrate(coming) {
+  function celebrate(status) {
     $("invite").hidden = true;
-    var thanks = $("thanks");
-    thanks.hidden = false;
+    $("thanks").hidden = false;
 
-    if (!coming) {
-      $("thanksEmoji").textContent = "💛";
-      $("thanksTitle").textContent = "Thank you for letting us know";
-      $("thanksMsg").textContent = "We'll miss you, but we totally understand. Sending a big hug your way!";
+    var copy = {
+      yes:   ["🎉", "Hooray — you're on the list!", "Thank you for letting us know. We can't wait to celebrate with you!"],
+      maybe: ["🤞", "Fingers crossed!", "Thanks for the heads up — we really hope you can make it. We'll save you a spot just in case! 💛"],
+      no:    ["💛", "Thank you for letting us know", "We'll miss you, but we totally understand. Sending a big hug your way!"],
+    }[status] || null;
+    if (copy) {
+      $("thanksEmoji").textContent = copy[0];
+      $("thanksTitle").textContent = copy[1];
+      $("thanksMsg").textContent = copy[2];
     }
-    // Offer "add to calendar" only to guests who are coming
-    $("calBox").hidden = !(coming && calReady);
+    // Offer "add to calendar" to guests who are coming
+    $("calBox").hidden = !(status === "yes" && calReady);
     burstConfetti();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
