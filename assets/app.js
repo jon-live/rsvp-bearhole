@@ -132,11 +132,19 @@
     if (!attendingEl) return showError("Let us know if you can make it!");
 
     var attending = attendingEl.value; // "yes" | "no" | "maybe"
+    var guestsVal = $("guests").value.trim();
+
+    // When coming (yes/maybe), "How Many" is required and must be at least 1.
+    if (attending !== "no") {
+      if (!guestsVal) return showError("Please tell us how many are coming 🙂");
+      if (!(Number(guestsVal) >= 1)) return showError("How many are coming? Please enter a number (1 or more).");
+    }
+
     var payload = {
       name: name,
       attending: attendingMap[attending] || attending,
-      // "How Many" is required in the form, so always send a number.
-      guests: attending === "no" ? "0" : ($("guests").value.trim() || "1"),
+      // "How Many" is required in the form; send 0 when not coming.
+      guests: attending === "no" ? "0" : guestsVal,
       note: $("note").value.trim(),
     };
 
