@@ -234,7 +234,7 @@
   var ctx = canvas.getContext("2d");
   var pieces = [];
   var rafId = null;
-  var colors = ["#FF8A65", "#4DB6AC", "#FFD54F", "#F4663B", "#ffffff"];
+  var colors = ["#C9A24B", "#E0C883", "#A8843A", "#FBF8F1", "#163D31"];
 
   function resize() {
     canvas.width = window.innerWidth;
