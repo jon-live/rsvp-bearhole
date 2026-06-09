@@ -76,27 +76,114 @@ body {
 .skyfloat { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
 .floatb {
   position: absolute;
-  bottom: -80px;
-  width: 26px; height: 32px;
+  bottom: -90px;
+  width: 32px; height: 40px;
   border-radius: 50% 50% 48% 48%;
-  opacity: 0.5;
+  opacity: 0.55;
+}
+.floatb::before {                 /* a soft highlight on the balloon */
+  content: "";
+  position: absolute;
+  top: 18%; left: 22%;
+  width: 30%; height: 26%;
+  background: rgba(255,255,255,0.55);
+  border-radius: 50%;
 }
 .floatb::after {
   content: "";
   position: absolute;
   top: 100%; left: 50%;
-  width: 1px; height: 36px;
+  width: 1px; height: 44px;
   background: rgba(80,100,120,0.3);
 }
 .fb1 { left: 6%;  background: var(--red);    animation: rise 26s linear infinite 0s; }
-.fb2 { left: 24%; background: var(--yellow); animation: rise 32s linear infinite 9s; opacity: 0.4; }
+.fb2 { left: 24%; background: var(--yellow); animation: rise 32s linear infinite 9s; opacity: 0.45; }
 .fb3 { left: 78%; background: var(--blue);   animation: rise 29s linear infinite 4s; }
-.fb4 { left: 92%; background: var(--red);    animation: rise 36s linear infinite 16s; opacity: 0.4; }
+.fb4 { left: 92%; background: var(--red);    animation: rise 36s linear infinite 16s; opacity: 0.42; }
+.fb5 { left: 46%; background: var(--grass);  animation: rise 40s linear infinite 22s; opacity: 0.4; }
+.fb6 { left: 62%; background: var(--yellow); animation: rise 30s linear infinite 13s; opacity: 0.5; }
 @keyframes rise {
   0%   { transform: translateY(0) translateX(0); opacity: 0; }
-  12%  { opacity: 0.5; }
-  88%  { opacity: 0.45; }
-  100% { transform: translateY(-118vh) translateX(20px); opacity: 0; }
+  12%  { opacity: 0.55; }
+  88%  { opacity: 0.5; }
+  100% { transform: translateY(-122vh) translateX(20px); opacity: 0; }
+}
+
+/* ---------- Gliding birds across the whole sky ---------- */
+.skydeco { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.bird2 { position: absolute; width: 22px; height: 12px; }
+.bird2::before, .bird2::after {
+  content: "";
+  position: absolute; top: 0;
+  width: 11px; height: 11px;
+  border: 2.5px solid transparent;
+  border-top-color: #6b7a86;
+  border-radius: 50%;
+  animation: flap 0.9s ease-in-out infinite;
+}
+.bird2::before { left: 0;  transform: rotate(28deg); }
+.bird2::after  { left: 9px; transform: rotate(-28deg); }
+@keyframes flap {
+  0%,100% { border-top-width: 2.5px; }
+  50%     { border-top-width: 1.4px; }
+}
+.bd1 { top: 14%; animation: flyacross 26s linear infinite 0s;  transform: scale(1);    opacity: 0.7; }
+.bd2 { top: 22%; animation: flyacross 34s linear infinite 9s;  transform: scale(0.75); opacity: 0.55; }
+.bd3 { top: 9%;  animation: flyacross 44s linear infinite 20s; transform: scale(0.6);  opacity: 0.45; }
+@keyframes flyacross {
+  0%   { transform: translate(-12vw, 0); }
+  50%  { transform: translate(50vw, -26px); }
+  100% { transform: translate(114vw, 0); }
+}
+
+/* ---------- Twinkling sparkles ---------- */
+.sparkle {
+  position: absolute;
+  width: 16px; height: 16px;
+  background: #FBE08A;
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  opacity: 0;
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+.sk1 { top: 16%; left: 12%; animation-delay: 0s;   }
+.sk2 { top: 30%; left: 84%; animation-delay: 1.1s; width: 12px; height: 12px; }
+.sk3 { top: 54%; left: 8%;  animation-delay: 2.2s; width: 20px; height: 20px; }
+.sk4 { top: 68%; left: 90%; animation-delay: 0.6s; }
+.sk5 { top: 80%; left: 18%; animation-delay: 1.7s; width: 12px; height: 12px; }
+.sk6 { top: 44%; left: 70%; animation-delay: 2.8s; width: 14px; height: 14px; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0;    transform: scale(0.4) rotate(0deg); }
+  50%      { opacity: 0.85; transform: scale(1)   rotate(25deg); }
+}
+
+/* ---------- A little kite drifting by ---------- */
+.kite { position: absolute; top: 24%; left: -60px; width: 30px; height: 30px;
+  animation: kitefly 38s linear infinite 6s; }
+.kite::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--red) 0 50%, var(--yellow) 50% 100%);
+  border-radius: 5px;
+  transform: rotate(45deg);
+  box-shadow: 0 6px 14px -8px rgba(32,70,110,0.6);
+  opacity: 0.8;
+}
+.kite-tail {
+  position: absolute; top: 92%; left: 48%;
+  width: 2px; height: 34px;
+  background: repeating-linear-gradient(180deg, var(--blue) 0 5px, transparent 5px 12px);
+  transform-origin: top center;
+  animation: tailwave 1.6s ease-in-out infinite;
+  opacity: 0.7;
+}
+@keyframes kitefly {
+  0%   { transform: translate(0, 0) rotate(-4deg); }
+  50%  { transform: translate(58vw, -24px) rotate(4deg); }
+  100% { transform: translate(120vw, 6px) rotate(-4deg); }
+}
+@keyframes tailwave {
+  0%,100% { transform: rotate(8deg); }
+  50%     { transform: rotate(-8deg); }
 }
 
 /* ---------- Card ---------- */
@@ -104,7 +191,7 @@ body {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 600px;
+  max-width: 680px;
   min-width: 0;                /* allow shrink below the SVG's intrinsic width */
   flex-shrink: 0;              /* never shrink vertically (would clip the form) */
   background: var(--cream);
@@ -149,6 +236,14 @@ body {
 .cl-b { animation: floatx 30s ease-in-out infinite; }
 @keyframes floatx { 0%,100% { transform: translateX(0); } 50% { transform: translateX(12px); } }
 
+/* the engine blinks now and then */
+.eyes { transform-box: fill-box; transform-origin: center; animation: blink 5.5s ease-in-out infinite; }
+@keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+
+/* wagon balloons bob gently */
+.balloons-svg { transform-box: fill-box; transform-origin: bottom center; animation: bob 3.4s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-3px) rotate(1.5deg); } }
+
 /* coupling rod orbits in a small circle, synced with the wheels */
 .rod { transform-box: fill-box; animation: rod 0.9s linear infinite; }
 @keyframes rod {
@@ -174,7 +269,7 @@ body {
 }
 
 /* ---------- Content ---------- */
-.content { padding: 48px 56px 50px; text-align: center; }
+.content { padding: 34px 56px 42px; text-align: center; }
 
 .eyebrow {
   font-family: "Nunito", sans-serif;
@@ -183,7 +278,7 @@ body {
   text-transform: uppercase;
   font-size: 0.72rem;
   color: var(--blue-deep);
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   padding-left: 0.34em;
 }
 
@@ -192,7 +287,7 @@ body {
   display: block;
   font-family: "Cormorant Garamond", serif;
   font-weight: 600;
-  font-size: clamp(3.8rem, 15vw, 6rem);
+  font-size: clamp(3.6rem, 13vw, 5.4rem);
   color: var(--ink);
   letter-spacing: 0.01em;
   line-height: 0.98;
@@ -218,7 +313,7 @@ body {
 /* ---------- Ornament divider ---------- */
 .ornament {
   display: flex; align-items: center; justify-content: center;
-  gap: 14px; margin: 24px auto; max-width: 220px;
+  gap: 14px; margin: 18px auto; max-width: 220px;
 }
 .ornament .rule { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--blue) 70%); }
 .ornament .rule:last-child { background: linear-gradient(90deg, var(--blue), transparent 70%); }
@@ -227,19 +322,19 @@ body {
 .intro {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.55rem;
-  line-height: 1.55;
+  line-height: 1.5;
   color: var(--ink);
-  margin: 0 auto 36px;
-  max-width: 34ch;
+  margin: 0 auto 26px;
+  max-width: 36ch;
 }
 
 /* ---------- Details ---------- */
 .details {
   list-style: none;
   margin: 0;
-  padding: 34px 6px;
+  padding: 26px 6px;
   display: grid;
-  gap: 24px;
+  gap: 18px;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   text-align: left;
@@ -266,7 +361,7 @@ body {
 .details a:hover { color: var(--blue); }
 
 /* ---------- Form ---------- */
-.rsvp { margin-top: 34px; text-align: left; }
+.rsvp { margin-top: 26px; text-align: left; }
 .rsvp-heading {
   font-family: "Nunito", sans-serif;
   font-weight: 700;
@@ -275,11 +370,11 @@ body {
   font-size: 0.82rem;
   color: var(--blue-deep);
   text-align: center;
-  margin: 0 0 26px;
+  margin: 0 0 22px;
   padding-left: 0.26em;
 }
 
-.field { display: block; margin-bottom: 24px; border: none; padding: 0; }
+.field { display: block; margin-bottom: 18px; border: none; padding: 0; }
 .label-text {
   display: block;
   font-family: "Nunito", sans-serif;
@@ -355,9 +450,9 @@ textarea { resize: vertical; min-height: 76px; }
 
 /* ---------- Gift note ---------- */
 .giftnote {
-  margin: 28px auto 0;
-  padding: 24px 26px;
-  max-width: 42ch;
+  margin: 22px auto 0;
+  padding: 20px 26px;
+  max-width: 44ch;
   background: var(--cream-2);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
@@ -513,29 +608,9 @@ textarea { resize: vertical; min-height: 76px; }
   .cal-btns { flex-direction: column; }
 }
 
-/* ---------- Sound toggle ---------- */
-.sound-toggle {
-  position: fixed;
-  top: 16px; right: 16px;
-  z-index: 70;
-  width: 46px; height: 46px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.82);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  box-shadow: 0 8px 20px -10px rgba(32,70,110,0.6);
-  cursor: pointer;
-  transition: transform 0.15s, background 0.2s, color 0.2s;
-}
-.sound-toggle:hover { transform: scale(1.07); }
-.sound-toggle[aria-pressed="true"] { background: var(--blue); border-color: var(--blue-deep); }
-.sound-toggle.playing { animation: soundpulse 0.9s ease-in-out infinite; }
-@keyframes soundpulse { 0%,100% { box-shadow: 0 8px 20px -10px rgba(32,94,156,0.7); } 50% { box-shadow: 0 8px 26px -6px rgba(32,94,156,0.95); } }
-
 @media (prefers-reduced-motion: reduce) {
   .card, .thanks, .train, .wheel, .ties, .rod, .smoke .puff, .puffcloud, .cloud,
-  .sound-toggle, .sunrays, .bird, .floatb { animation: none; }
+  .sunrays, .bird, .floatb, .bird2, .bird2::before, .bird2::after,
+  .sparkle, .kite, .kite-tail, .eyes, .balloons-svg { animation: none; }
+  .sparkle { opacity: 0.5; }
 }

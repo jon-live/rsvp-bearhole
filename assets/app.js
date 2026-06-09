@@ -346,32 +346,35 @@
       }
     }
     return {
-      toggle: function () {
-        if (!ensure()) return false;
+      // Begin the music. Safe to call before any user gesture: the audio
+      // clock is frozen while suspended, so notes simply wait and start
+      // playing the instant the context is resumed (see resume()).
+      start: function () {
+        if (!ensure()) return;
+        if (on) return;
+        on = true;
         if (actx.state === "suspended") actx.resume();
-        on = !on;
-        if (on) {
-          step = 0; nextTime = actx.currentTime + 0.12;
-          whistle();
-          lookahead = setInterval(scheduler, 40);
-        } else {
-          clearInterval(lookahead); lookahead = null;
-        }
-        return on;
+        step = 0; nextTime = actx.currentTime + 0.12;
+        whistle();
+        lookahead = setInterval(scheduler, 40);
       },
+      // Resume a context the browser left suspended (must run in a gesture).
+      resume: function () { if (actx && actx.state === "suspended") actx.resume(); },
       tootIfOn: function () { if (on) whistle(); },
     };
   })();
 
-  var soundBtn = $("soundToggle");
-  if (soundBtn) {
-    soundBtn.addEventListener("click", function () {
-      var playing = Sound.toggle();
-      soundBtn.setAttribute("aria-pressed", playing ? "true" : "false");
-      soundBtn.classList.toggle("playing", playing);
-      soundBtn.querySelector(".sound-ico").textContent = playing ? "🔊" : "🔈";
-    });
+  // Music is ON by default. Arm it now, then nudge the audio context awake
+  // on the very first user interaction (browsers block autoplay until then).
+  Sound.start();
+  var GESTURES = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"];
+  function wakeAudio() {
+    Sound.resume();
+    GESTURES.forEach(function (ev) { window.removeEventListener(ev, wakeAudio); });
   }
+  GESTURES.forEach(function (ev) {
+    window.addEventListener(ev, wakeAudio, { once: false, passive: true });
+  });
 
   /* ---------- 4. Confetti (tiny canvas implementation) ---------- */
   var canvas = $("confetti");
