@@ -11,18 +11,23 @@ window.EVENT_CONFIG = {
 
   /* ---- When & where ------------------------------------------- */
   date: "Sunday, June 21st, 2026",
-  time: "10:00 AM – 12:00 noon",
-  location: "To be announced",
-  locationUrl: "",                 // optional Google Maps link ("" to hide)
+  time: "4:00 – 7:00 in the evening",
+  location: "1580 Drake Way, Palo Alto, CA",
+  locationUrl: "https://www.google.com/maps/search/?api=1&query=1580%20Drake%20Way%2C%20Palo%20Alto%2C%20CA",
   rsvpBy: "Kindly reply by June 18th",
+
+  /* ---- Good things to know (optional rows; blank "" to hide) -- */
+  parking: "Street parking available right nearby",
+  food: "A proper spread for grown-ups, with kid-friendly favorites too",
+  fun: "Games, toys, music, pool access & playgrounds",
 
   /* ---- "Add to calendar" (optional) --------------------------
      Fill both to show calendar buttons on the thank-you screen.
      Use 24-hour local time, format: "YYYY-MM-DDTHH:MM:SS".
      Leave either blank ("") to hide the buttons.            */
   calendar: {
-    start: "2026-06-21T10:00:00",
-    end:   "2026-06-21T12:00:00",
+    start: "2026-06-21T16:00:00",
+    end:   "2026-06-21T19:00:00",
   },
 
   /* ---- Close RSVPs after a cutoff (optional) -----------------

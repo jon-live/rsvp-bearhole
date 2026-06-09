@@ -46,6 +46,15 @@
     }
   }
 
+  // Optional "good to know" rows — hide the row if its config value is blank
+  [["parking", cfg.parking], ["food", cfg.food], ["fun", cfg.fun]].forEach(function (pair) {
+    var el = $(pair[0]);
+    if (!el) return;
+    var li = el.closest && el.closest("li");
+    if (pair[1] == null || pair[1] === "") { if (li) li.hidden = true; return; }
+    el.textContent = pair[1];
+  });
+
   var gf = cfg.googleForm || {};
   // Exact text each choice must send to match the Google Form options.
   var attendingMap = {
