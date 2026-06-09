@@ -21,7 +21,8 @@
 }
 
 * { box-sizing: border-box; }
-html { height: 100%; }
+/* stable gutter on both edges so a scrollbar can't push the card off-center */
+html { height: 100%; scrollbar-gutter: stable both-edges; }
 
 body {
   margin: 0;
@@ -280,7 +281,7 @@ body {
 }
 
 /* ---------- Content ---------- */
-.content { padding: 34px 56px 42px; text-align: center; }
+.content { padding: 28px 48px 34px; text-align: center; }
 
 .eyebrow {
   font-family: "Nunito", sans-serif;
@@ -289,7 +290,7 @@ body {
   text-transform: uppercase;
   font-size: 0.72rem;
   color: var(--blue-deep);
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   padding-left: 0.34em;
 }
 
@@ -298,7 +299,7 @@ body {
   display: block;
   font-family: "Cormorant Garamond", serif;
   font-weight: 600;
-  font-size: clamp(3.6rem, 13vw, 5.4rem);
+  font-size: clamp(3.4rem, 12vw, 5rem);
   color: var(--ink);
   letter-spacing: 0.01em;
   line-height: 0.98;
@@ -309,22 +310,23 @@ body {
   font-style: italic;
   font-weight: 500;
   color: var(--ink-soft);
-  font-size: clamp(1.45rem, 5.4vw, 2rem);
-  margin-top: 12px;
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+  margin-top: 8px;
 }
 .age {
   font-family: "Fredoka", sans-serif;
   font-style: normal;
   font-weight: 600;
   color: var(--red);
-  font-size: 1.15em;
-  margin-left: 2px;
+  font-size: 1.9em;
+  margin-left: 4px;
+  vertical-align: -0.12em;
 }
 
 /* ---------- Ornament divider ---------- */
 .ornament {
   display: flex; align-items: center; justify-content: center;
-  gap: 14px; margin: 18px auto; max-width: 220px;
+  gap: 14px; margin: 14px auto; max-width: 220px;
 }
 .ornament .rule { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--blue) 70%); }
 .ornament .rule:last-child { background: linear-gradient(90deg, var(--blue), transparent 70%); }
@@ -332,10 +334,10 @@ body {
 
 .intro {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.55rem;
-  line-height: 1.5;
+  font-size: 1.45rem;
+  line-height: 1.45;
   color: var(--ink);
-  margin: 0 auto 26px;
+  margin: 0 auto 18px;
   max-width: 36ch;
 }
 
@@ -343,14 +345,18 @@ body {
 .details {
   list-style: none;
   margin: 0;
-  padding: 26px 6px;
+  padding: 22px 6px;
   display: grid;
-  gap: 18px;
+  gap: 14px;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   text-align: left;
 }
-.details li { display: grid; grid-template-columns: 104px 1fr; align-items: baseline; gap: 18px; }
+/* two columns on wider screens to cut the page height */
+@media (min-width: 600px) {
+  .details { grid-template-columns: 1fr 1fr; gap: 16px 34px; }
+}
+.details li { display: grid; grid-template-columns: 96px 1fr; align-items: baseline; gap: 16px; }
 .details li[hidden] { display: none; }
 .d-label {
   font-family: "Nunito", sans-serif;
@@ -363,16 +369,16 @@ body {
 }
 .d-value {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.45rem;
+  font-size: 1.3rem;
   font-weight: 500;
   color: var(--ink);
-  line-height: 1.35;
+  line-height: 1.3;
 }
 .details a { color: var(--blue-deep); text-decoration: none; border-bottom: 1px solid var(--blue); padding-bottom: 1px; }
 .details a:hover { color: var(--blue); }
 
 /* ---------- Form ---------- */
-.rsvp { margin-top: 26px; text-align: left; }
+.rsvp { margin-top: 22px; text-align: left; }
 .rsvp-heading {
   font-family: "Nunito", sans-serif;
   font-weight: 700;
@@ -381,18 +387,18 @@ body {
   font-size: 0.82rem;
   color: var(--blue-deep);
   text-align: center;
-  margin: 0 0 22px;
+  margin: 0 0 16px;
   padding-left: 0.26em;
 }
 
-.field { display: block; margin-bottom: 18px; border: none; padding: 0; }
+.field { display: block; margin-bottom: 14px; border: none; padding: 0; }
 .label-text {
   display: block;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   letter-spacing: 0.02em;
   font-size: 0.92rem;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
   color: var(--ink);
 }
 .optional { font-weight: 400; color: var(--ink-soft); font-size: 0.82rem; }
@@ -416,7 +422,7 @@ input:focus, textarea:focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(59,134,204,0.16);
 }
-textarea { resize: vertical; min-height: 76px; }
+textarea { resize: vertical; min-height: 60px; }
 
 /* attending choices */
 .attending .choices { display: flex; gap: 10px; }
@@ -424,11 +430,11 @@ textarea { resize: vertical; min-height: 76px; }
 .choice input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
 .pill {
   display: flex; align-items: center; justify-content: center; text-align: center;
-  min-height: 56px;
+  min-height: 46px;
   font-family: "Nunito", sans-serif;
   font-weight: 600;
   font-size: 0.88rem;
-  padding: 10px 8px;
+  padding: 8px 8px;
   border-radius: var(--radius-sm);
   background: #fff;
   border: 1.5px solid rgba(51,65,76,0.16);
@@ -625,8 +631,9 @@ textarea { resize: vertical; min-height: 76px; }
 }
 
 @media (max-width: 460px) {
-  .content { padding: 30px 24px 34px; }
-  .details li { grid-template-columns: 80px 1fr; gap: 12px; }
+  .content { padding: 22px 20px 28px; }
+  .details { padding: 18px 4px; gap: 12px; }
+  .details li { grid-template-columns: 76px 1fr; gap: 12px; }
   .attending .choices { flex-direction: column; }
   .cal-btns { flex-direction: column; }
 }

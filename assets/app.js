@@ -20,7 +20,13 @@
   text("intro", cfg.intro);
   text("date", cfg.date);
   text("time", cfg.time);
-  text("rsvpBy", cfg.rsvpBy);
+
+  // rsvp-by line — hide it entirely when blank in config
+  var rsvpByEl = $("rsvpBy");
+  if (rsvpByEl) {
+    if (cfg.rsvpBy) rsvpByEl.textContent = cfg.rsvpBy;
+    else rsvpByEl.hidden = true;
+  }
 
   // Age line (hide entirely if turningAge is null)
   if (cfg.turningAge == null) {

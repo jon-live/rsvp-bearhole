@@ -14,7 +14,7 @@ window.EVENT_CONFIG = {
   time: "4:00 – 7:00 in the evening",
   location: "1580 Drake Way, Palo Alto, CA",
   locationUrl: "https://www.google.com/maps/search/?api=1&query=1580%20Drake%20Way%2C%20Palo%20Alto%2C%20CA",
-  rsvpBy: "Kindly reply by June 18th",
+  rsvpBy: "",
 
   /* ---- Good things to know (optional rows; blank "" to hide) -- */
   parking: "Street parking available right nearby",
