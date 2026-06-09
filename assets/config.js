@@ -21,6 +21,9 @@ window.EVENT_CONFIG = {
   food: "A proper spread for grown-ups, with kid-friendly favorites too",
   fun: "Games, toys, music, pool access & playgrounds",
 
+  /* ---- A gentle note on gifts (optional; blank "" to hide) --- */
+  gifts: "Your presence is the best present! Please don't feel obligated to bring a gift. But if you'd love to give a little something, an Amazon or Target gift card — or a book for the birthday boy — would be wonderful.",
+
   /* ---- "Add to calendar" (optional) --------------------------
      Fill both to show calendar buttons on the thank-you screen.
      Use 24-hour local time, format: "YYYY-MM-DDTHH:MM:SS".

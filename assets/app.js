@@ -55,6 +55,12 @@
     el.textContent = pair[1];
   });
 
+  // Optional gift note
+  if (cfg.gifts) {
+    var giftText = $("giftText");
+    if (giftText) { giftText.textContent = cfg.gifts; $("giftnote").hidden = false; }
+  }
+
   var gf = cfg.googleForm || {};
   // Exact text each choice must send to match the Google Form options.
   var attendingMap = {
@@ -258,76 +264,99 @@
   }
   function hideError() { error.hidden = true; }
 
-  /* ---------- 3b. Train sounds (Web Audio, no asset files) ---------- */
+  /* ---------- 3b. Train music (Web Audio, no asset files) ----------
+     A cheerful original tune (NOT the copyrighted Thomas theme) over a
+     soft chuffing rhythm, plus a friendly whistle. ----------------- */
   var Sound = (function () {
-    var ctx, master, on = false, timer = null, beat = 0;
+    var actx, master, on = false, lookahead = null, nextTime = 0, step = 0;
+
+    // notes (Hz). lowercase = mid octave, uppercase = high octave
+    var N = { 0: 0, c: 261.63, d: 293.66, e: 329.63, f: 349.23, g: 392.00,
+              a: 440.00, b: 493.88, C: 523.25, D: 587.33, E: 659.25,
+              F: 698.46, G: 783.99 };
+    // a jolly 16-step phrase in C major (eighth notes), with a bass line
+    var MELODY = ["g", "g", "C", "E", "D", "C", "g", 0,
+                  "a", "a", "D", "F", "E", "D", "C", 0];
+    var BASS   = ["c", 0, "e", 0, "g", 0, "c", 0,
+                  "f", 0, "a", 0, "g", 0, "g", 0];
+    var TEMPO = 138;                 // bpm — bouncy
+    var EIGHTH = 30 / TEMPO;         // seconds per eighth note
+
     function ensure() {
-      if (ctx) return true;
+      if (actx) return true;
       var AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return false;
-      ctx = new AC();
-      master = ctx.createGain();
-      master.gain.value = 0.16;
-      master.connect(ctx.destination);
+      actx = new AC();
+      master = actx.createGain();
+      master.gain.value = 0.2;
+      master.connect(actx.destination);
       return true;
     }
-    function noise(dur) {
-      var n = Math.max(1, (ctx.sampleRate * dur) | 0);
-      var b = ctx.createBuffer(1, n, ctx.sampleRate);
-      var d = b.getChannelData(0);
-      for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
-      return b;
-    }
-    // a single "chuff" of escaping steam
-    function chuff(t, strong) {
-      var src = ctx.createBufferSource();
-      src.buffer = noise(0.2);
-      var bp = ctx.createBiquadFilter();
-      bp.type = "bandpass";
-      bp.frequency.value = strong ? 480 : 560;
-      bp.Q.value = 0.9;
-      var g = ctx.createGain();
-      var peak = strong ? 0.9 : 0.55;
+    // a soft melodic tone
+    function tone(freq, t, dur, type, peak) {
+      if (!freq) return;
+      var o = actx.createOscillator(), g = actx.createGain();
+      var lp = actx.createBiquadFilter();
+      lp.type = "lowpass"; lp.frequency.value = 2400;
+      o.type = type; o.frequency.value = freq;
       g.gain.setValueAtTime(0.0001, t);
-      g.gain.linearRampToValueAtTime(peak, t + 0.012);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.17);
-      src.connect(bp); bp.connect(g); g.connect(master);
-      src.start(t); src.stop(t + 0.2);
+      g.gain.linearRampToValueAtTime(peak, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(lp); lp.connect(g); g.connect(master);
+      o.start(t); o.stop(t + dur + 0.02);
     }
-    // a warm two-tone whistle
+    // a gentle puff of steam for rhythm
+    function chuff(t) {
+      var n = (actx.sampleRate * 0.12) | 0;
+      var b = actx.createBuffer(1, n, actx.sampleRate);
+      var d = b.getChannelData(0);
+      for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+      var src = actx.createBufferSource(); src.buffer = b;
+      var bp = actx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 500;
+      var g = actx.createGain(); g.gain.value = 0.09;
+      src.connect(bp); bp.connect(g); g.connect(master);
+      src.start(t); src.stop(t + 0.12);
+    }
     function whistle() {
       if (!ensure()) return;
-      if (ctx.state === "suspended") ctx.resume();
-      var t = ctx.currentTime;
-      var lp = ctx.createBiquadFilter();
-      lp.type = "lowpass"; lp.frequency.value = 1800;
-      var g = ctx.createGain();
+      if (actx.state === "suspended") actx.resume();
+      var t = actx.currentTime;
+      var lp = actx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1700;
+      var g = actx.createGain();
       g.gain.setValueAtTime(0.0001, t);
-      g.gain.linearRampToValueAtTime(0.28, t + 0.09);
-      g.gain.setValueAtTime(0.28, t + 0.55);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.0);
+      g.gain.linearRampToValueAtTime(0.26, t + 0.08);
+      g.gain.setValueAtTime(0.26, t + 0.45);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
       lp.connect(g); g.connect(master);
-      [740, 988].forEach(function (f, i) {
-        var o = ctx.createOscillator();
-        o.type = "sawtooth";
-        o.frequency.value = f + (i ? 6 : 0);
-        o.connect(lp); o.start(t); o.stop(t + 1.02);
+      [784, 988].forEach(function (f, i) {
+        var o = actx.createOscillator();
+        o.type = "sawtooth"; o.frequency.value = f + (i ? 5 : 0);
+        o.connect(lp); o.start(t); o.stop(t + 0.92);
       });
     }
-    function start() {
-      timer = setInterval(function () {
-        if (!ctx) return;
-        chuff(ctx.currentTime + 0.01, beat % 2 === 0); // chuff-CHUFF rhythm
-        beat++;
-      }, 450);
+    // schedule notes a little ahead of time for steady timing
+    function scheduler() {
+      while (nextTime < actx.currentTime + 0.2) {
+        var i = step % 16;
+        tone(N[MELODY[i]], nextTime, EIGHTH * 0.9, "triangle", 0.24);
+        if (BASS[i]) tone(N[BASS[i]] / 2, nextTime, EIGHTH * 1.7, "sine", 0.20);
+        if (i % 2 === 0) chuff(nextTime);
+        nextTime += EIGHTH;
+        step++;
+      }
     }
     return {
       toggle: function () {
         if (!ensure()) return false;
-        if (ctx.state === "suspended") ctx.resume();
+        if (actx.state === "suspended") actx.resume();
         on = !on;
-        if (on) { whistle(); start(); }
-        else { clearInterval(timer); timer = null; }
+        if (on) {
+          step = 0; nextTime = actx.currentTime + 0.12;
+          whistle();
+          lookahead = setInterval(scheduler, 40);
+        } else {
+          clearInterval(lookahead); lookahead = null;
+        }
         return on;
       },
       tootIfOn: function () { if (on) whistle(); },
