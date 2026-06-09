@@ -506,6 +506,36 @@ textarea { resize: vertical; min-height: 60px; }
   color: var(--ink);
 }
 
+/* ---------- "Welcome back, edit your RSVP" banner ---------- */
+.editnote {
+  margin: 0 auto 6px;
+  padding: 14px 18px;
+  max-width: 42ch;
+  background: rgba(59,134,204,0.08);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+.edit-text {
+  margin: 0 0 8px;
+  font-family: "Nunito", sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--blue-deep);
+}
+.edit-fresh {
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.edit-fresh:hover { color: var(--blue-deep); }
+
 /* ---------- RSVPs closed notice ---------- */
 .closed {
   margin: 30px auto 4px;

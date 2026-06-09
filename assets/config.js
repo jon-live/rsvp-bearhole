@@ -54,6 +54,12 @@ window.EVENT_CONFIG = {
     // Paste the form's POST url. It ends in /formResponse (NOT /viewform).
     actionUrl: "https://docs.google.com/forms/d/e/1FAIpQLScJ28NWZU9SbZ8uUZBP1jpgWIf3pSmtv5PI6SXTkLaE1kNemg/formResponse",
 
+    // OPTIONAL — paste a Google Apps Script Web App URL here to enable TRUE
+    // cross-device editing (each guest updates one clean row, from any device).
+    // See apps-script/SETUP.md. Left blank, the site uses the Google Form above
+    // plus device-based editing (we remember a guest's reply in their browser).
+    appsScriptUrl: "",
+
     // The entry IDs for each question (look like "entry.1234567890").
     fields: {
       name:      "entry.2121458455",

@@ -335,6 +335,12 @@
         <!-- Shown instead of the form once RSVPs have closed -->
         <p class="closed" id="closedNotice" hidden></p>
 
+        <!-- Shown when we recognize a returning guest (lets them edit) -->
+        <div class="editnote" id="editNote" hidden>
+          <p class="edit-text"><span aria-hidden="true">↻</span> Welcome back! We saved your earlier reply — change anything below and resend.</p>
+          <button type="button" class="edit-fresh" id="freshBtn">Start a brand-new RSVP instead</button>
+        </div>
+
         <!-- ---------- RSVP form ---------- -->
         <form class="rsvp" id="rsvpForm" novalidate>
           <h2 class="rsvp-heading">Kindly RSVP</h2>
@@ -415,7 +421,7 @@
           </div>
         </div>
 
-        <button type="button" class="ghost" id="againBtn">Send another RSVP</button>
+        <button type="button" class="ghost" id="againBtn">Edit my RSVP</button>
       </section>
     </div>
   </main>

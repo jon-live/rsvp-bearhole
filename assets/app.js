@@ -171,6 +171,53 @@
     return a + " adult" + (a === 1 ? "" : "s") + ", " + k + " kid" + (k === 1 ? "" : "s");
   }
 
+  /* ---------- 3a. Remember & edit a previous RSVP (device-based) ----------
+     We keep the guest's last reply in their browser so a return visit can
+     pre-fill the form and let them update it. With the Google Form backend an
+     update lands as a fresh row (keep the latest per name by timestamp); set
+     googleForm.appsScriptUrl to upsert one clean row per guest instead. */
+  var STORE_KEY = "rsvp:" + slug(cfg.honoree || "event") + ":" +
+                  ((cfg.calendar && cfg.calendar.start) || "");
+  function loadSaved() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY) || "null"); }
+    catch (e) { return null; }
+  }
+  function save(obj)      { try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); } catch (e) {} }
+  function clearSaved()   { try { localStorage.removeItem(STORE_KEY); } catch (e) {} }
+  function newId()        { return "r-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8); }
+
+  var editNote = $("editNote");
+  function setEditMode(on) {
+    if (editNote) editNote.hidden = !on;
+    submitBtn.querySelector(".btn-label").textContent = on ? "Update my RSVP" : "Send my RSVP";
+  }
+  function prefill(saved) {
+    if (!saved) return;
+    if (saved.name) $("name").value = saved.name;
+    var radio = saved.attending &&
+      document.querySelector('input[name="attending"][value="' + saved.attending + '"]');
+    if (radio) radio.checked = true;
+    if (saved.adults != null) $("adults").value = saved.adults || "";
+    if (saved.kids   != null) $("kids").value   = saved.kids || "";
+    if (saved.note) $("note").value = saved.note;
+    syncGuests();
+  }
+
+  var savedRsvp = loadSaved();
+  if (savedRsvp && !closed) { prefill(savedRsvp); setEditMode(true); }
+
+  if ($("freshBtn")) {
+    $("freshBtn").addEventListener("click", function () {
+      clearSaved();
+      savedRsvp = null;
+      form.reset();
+      syncGuests();
+      hideError();
+      setEditMode(false);
+      $("name").focus();
+    });
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     hideError();
@@ -192,22 +239,47 @@
     }
 
     var coming = attending !== "no";
+    var rsvpId = (savedRsvp && savedRsvp.rsvpId) || newId();
+    var noteVal = $("note").value.trim();
     var payload = {
+      rsvpId: rsvpId,
       name: name,
       attending: attendingMap[attending] || attending,
       adults: coming ? adults : 0,
       kids:   coming ? kids : 0,
       total:  coming ? total : 0,
-      note: $("note").value.trim(),
+      note: noteVal,
     };
+
+    // Remember this reply on the device so a return visit can edit it.
+    savedRsvp = { rsvpId: rsvpId, name: name, attending: attending,
+                  adults: coming ? adults : 0, kids: coming ? kids : 0, note: noteVal };
+    save(savedRsvp);
 
     submitBtn.disabled = true;
     submitBtn.querySelector(".btn-label").textContent = "Sending…";
 
-    sendToGoogleForm(payload).then(function () {
+    sendRSVP(payload).then(function () {
       celebrate(attending);
     });
   });
+
+  function sendRSVP(payload) {
+    if (gf.appsScriptUrl) return sendToAppsScript(payload);
+    return sendToGoogleForm(payload);
+  }
+  function sendToAppsScript(payload) {
+    // text/plain keeps it a "simple" request (no CORS preflight). The script
+    // upserts by payload.rsvpId, so an edit overwrites the same sheet row.
+    return fetch(gf.appsScriptUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+    }).catch(function (err) {
+      console.error("[RSVP] Apps Script submission error:", err, payload);
+    });
+  }
 
   function sendToGoogleForm(payload) {
     var action = gf.actionUrl;
@@ -279,10 +351,10 @@
   }
 
   $("againBtn").addEventListener("click", function () {
-    form.reset();
-    syncGuests();
+    // Return to the (still pre-filled) form so they can tweak & resend.
     submitBtn.disabled = false;
-    submitBtn.querySelector(".btn-label").textContent = "Send my RSVP";
+    setEditMode(!!savedRsvp);
+    syncGuests();
     $("thanks").hidden = true;
     $("invite").hidden = false;
     // restore default thank-you copy for next time
