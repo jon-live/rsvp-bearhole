@@ -477,14 +477,11 @@ textarea { resize: vertical; min-height: 60px; }
   text-align: center;
 }
 
-/* ---------- Gift note ---------- */
+/* ---------- Gift note (a light closing line under the details) ---------- */
 .giftnote {
-  margin: 22px auto 0;
-  padding: 20px 26px;
-  max-width: 44ch;
-  background: var(--cream-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  margin: 18px auto 2px;
+  padding: 0 6px;
+  max-width: 46ch;
   text-align: center;
 }
 .gift-label {
@@ -493,17 +490,17 @@ textarea { resize: vertical; min-height: 60px; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--blue-deep);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .gift-text {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
-  font-size: 1.28rem;
-  line-height: 1.55;
-  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
 }
 
 /* ---------- "Welcome back, edit your RSVP" banner ---------- */
