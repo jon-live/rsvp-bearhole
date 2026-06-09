@@ -176,6 +176,7 @@ body {
   border-bottom: 1px solid var(--line);
 }
 .details li { display: flex; flex-direction: column; gap: 6px; }
+.details li[hidden] { display: none; }
 .d-label {
   font-family: "Jost", sans-serif;
   font-weight: 500;
