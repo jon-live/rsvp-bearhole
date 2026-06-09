@@ -469,16 +469,16 @@
     };
   })();
 
-  // Music is ON by default. Arm it now, then nudge the audio context awake
-  // on the very first user interaction (browsers block autoplay until then).
-  Sound.start();
-  var GESTURES = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"];
-  function wakeAudio() {
-    Sound.resume();
-    GESTURES.forEach(function (ev) { window.removeEventListener(ev, wakeAudio); });
+  // Music is ON by default, but browsers block autoplay until the user
+  // interacts. Start the whole engine INSIDE the first gesture (most reliable
+  // path, esp. on iOS Safari) and then stop listening.
+  var GESTURES = ["pointerdown", "keydown", "touchstart", "click", "wheel", "scroll"];
+  function startAudioOnce() {
+    Sound.start();
+    GESTURES.forEach(function (ev) { window.removeEventListener(ev, startAudioOnce); });
   }
   GESTURES.forEach(function (ev) {
-    window.addEventListener(ev, wakeAudio, { once: false, passive: true });
+    window.addEventListener(ev, startAudioOnce, { once: false, passive: true });
   });
 
   /* ---------- 4. Confetti (tiny canvas implementation) ---------- */
