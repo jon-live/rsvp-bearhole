@@ -3,137 +3,280 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>You're Invited 🎈</title>
+  <title>You're Invited 🚂</title>
   <meta name="description" content="You're invited to a birthday celebration — please RSVP!" />
 
   <!-- Link-preview card (shown when you share the link in chats/social).
        NOTE: crawlers don't run JavaScript, so edit these by hand to match
        your event — see README "Pretty link previews". -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="You're Invited! 🎈" />
-  <meta property="og:description" content="Come celebrate a birthday with us — tap to RSVP!" />
+  <meta property="og:title" content="You're Invited! 🚂" />
+  <meta property="og:description" content="All aboard — come celebrate with us! Tap to RSVP." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="You're Invited! 🎈" />
-  <meta name="twitter:description" content="Come celebrate a birthday with us — tap to RSVP!" />
+  <meta name="twitter:title" content="You're Invited! 🚂" />
+  <meta name="twitter:description" content="All aboard — come celebrate with us! Tap to RSVP." />
 
-  <!-- Elegant serif display + refined geometric body -->
+  <!-- Elegant serif display + soft rounded body -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Fredoka:wght@400;500;600&family=Nunito:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚂</text></svg>" />
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <!-- Confetti lives here -->
   <canvas id="confetti" aria-hidden="true"></canvas>
 
-  <!-- Decorative floating balloons -->
-  <div class="balloons" aria-hidden="true">
-    <span class="balloon b1"></span>
-    <span class="balloon b2"></span>
-    <span class="balloon b3"></span>
-    <span class="balloon b4"></span>
-    <span class="balloon b5"></span>
+  <!-- Decorative drifting clouds -->
+  <div class="clouds" aria-hidden="true">
+    <span class="cloud c1"></span>
+    <span class="cloud c2"></span>
+    <span class="cloud c3"></span>
   </div>
 
   <main class="card" id="card">
-    <!-- ---------- Invitation ---------- -->
-    <section class="invite" id="invite">
-      <p class="eyebrow">You are warmly invited</p>
 
-      <h1 class="title">
-        <span class="honoree" id="honoree">Bear</span>
-        <span class="age-line" id="ageLine">
-          <span id="tagline">is turning</span>
-          <span class="age" id="age">5</span>
-        </span>
-      </h1>
+    <!-- ---------- Hero: a friendly little train ---------- -->
+    <div class="hero" aria-hidden="true">
+      <svg class="hero-svg" viewBox="0 0 600 280" role="img" preserveAspectRatio="xMidYMax meet"
+           aria-label="A cheerful blue steam engine chugging along, pulling balloons">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#BFE3FB"/>
+            <stop offset="1" stop-color="#ECF7FF"/>
+          </linearGradient>
+          <linearGradient id="engine" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4A95D6"/>
+            <stop offset="1" stop-color="#2364A2"/>
+          </linearGradient>
+          <linearGradient id="hill1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#B6D9AC"/>
+            <stop offset="1" stop-color="#A2CD97"/>
+          </linearGradient>
+        </defs>
 
-      <div class="ornament" aria-hidden="true">
-        <span class="rule"></span><span class="mark">✦</span><span class="rule"></span>
-      </div>
+        <!-- sky -->
+        <rect x="0" y="0" width="600" height="280" fill="url(#sky)"/>
 
-      <p class="intro" id="intro">We'd be over the moon if you'd come celebrate with us!</p>
+        <!-- sun -->
+        <circle cx="525" cy="58" r="30" fill="#FBE08A"/>
+        <circle cx="525" cy="58" r="42" fill="#FBE08A" opacity="0.25"/>
 
-      <ul class="details">
-        <li><span class="d-label">When</span><span class="d-value" id="date">Saturday</span></li>
-        <li><span class="d-label">Time</span><span class="d-value" id="time">2:00 in the afternoon</span></li>
-        <li><span class="d-label">Where</span><span class="d-value" id="location">The Park</span></li>
-        <li><span class="d-label">Parking</span><span class="d-value" id="parking"></span></li>
-        <li><span class="d-label">Food</span><span class="d-value" id="food"></span></li>
-        <li><span class="d-label">Fun &amp; Games</span><span class="d-value" id="fun"></span></li>
-      </ul>
+        <!-- bunting -->
+        <g class="bunting" opacity="0.95">
+          <path d="M8 30 Q300 70 592 30" stroke="#9bbad8" stroke-width="2" fill="none"/>
+          <g>
+            <path d="M64 38 l18 2 l-7 18 z" fill="#E15B53"/>
+            <path d="M150 49 l18 1 l-6 18 z" fill="#F4C84A"/>
+            <path d="M250 56 l18 0 l-8 17 z" fill="#4A95D6"/>
+            <path d="M350 56 l18 -1 l-10 16 z" fill="#E15B53"/>
+            <path d="M448 49 l18 -2 l-11 16 z" fill="#F4C84A"/>
+            <path d="M534 38 l18 -3 l-12 16 z" fill="#4A95D6"/>
+          </g>
+        </g>
 
-      <!-- Shown instead of the form once RSVPs have closed -->
-      <p class="closed" id="closedNotice" hidden></p>
+        <!-- soft clouds -->
+        <g fill="#ffffff">
+          <g class="puffcloud cl-a" opacity="0.95">
+            <ellipse cx="120" cy="78" rx="32" ry="18"/>
+            <ellipse cx="148" cy="70" rx="24" ry="16"/>
+            <ellipse cx="96" cy="84" rx="20" ry="13"/>
+          </g>
+          <g class="puffcloud cl-b" opacity="0.9">
+            <ellipse cx="400" cy="56" rx="26" ry="15"/>
+            <ellipse cx="424" cy="50" rx="20" ry="13"/>
+          </g>
+        </g>
 
-      <!-- ---------- RSVP form ---------- -->
-      <form class="rsvp" id="rsvpForm" novalidate>
-        <h2 class="rsvp-heading">Kindly RSVP</h2>
+        <!-- rolling hills -->
+        <path d="M0 232 Q150 188 330 220 T600 210 L600 280 L0 280 Z" fill="url(#hill1)"/>
+        <path d="M0 248 Q200 214 430 244 T600 238 L600 280 L0 280 Z" fill="#8DBE82"/>
 
-        <label class="field">
-          <span class="label-text">Your name</span>
-          <input type="text" id="name" name="name" autocomplete="name"
-                 placeholder="e.g. The Garcia family" required />
-        </label>
+        <!-- railway track -->
+        <g>
+          <rect x="0" y="245" width="600" height="5" fill="#C8A878"/>
+          <g fill="#9E7C52">
+            <rect x="14"  y="250" width="10" height="14" rx="2"/>
+            <rect x="64"  y="250" width="10" height="14" rx="2"/>
+            <rect x="114" y="250" width="10" height="14" rx="2"/>
+            <rect x="164" y="250" width="10" height="14" rx="2"/>
+            <rect x="214" y="250" width="10" height="14" rx="2"/>
+            <rect x="264" y="250" width="10" height="14" rx="2"/>
+            <rect x="314" y="250" width="10" height="14" rx="2"/>
+            <rect x="364" y="250" width="10" height="14" rx="2"/>
+            <rect x="414" y="250" width="10" height="14" rx="2"/>
+            <rect x="464" y="250" width="10" height="14" rx="2"/>
+            <rect x="514" y="250" width="10" height="14" rx="2"/>
+            <rect x="564" y="250" width="10" height="14" rx="2"/>
+          </g>
+          <rect x="0" y="243" width="600" height="3" fill="#D9BC90"/>
+        </g>
 
-        <fieldset class="field attending">
-          <legend class="label-text">Can you make it?</legend>
-          <div class="choices">
-            <label class="choice">
-              <input type="radio" name="attending" value="yes" required />
-              <span class="pill">Joyfully accept</span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="attending" value="maybe" />
-              <span class="pill">Perhaps</span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="attending" value="no" />
-              <span class="pill">Regretfully decline</span>
-            </label>
-          </div>
-        </fieldset>
+        <!-- THE TRAIN -->
+        <g class="train">
+          <!-- smoke -->
+          <g class="smoke" fill="#ffffff">
+            <circle class="puff p1" cx="120" cy="150" r="8"/>
+            <circle class="puff p2" cx="128" cy="128" r="10"/>
+            <circle class="puff p3" cx="120" cy="104" r="12"/>
+          </g>
 
-        <label class="field" id="guestsField">
-          <span class="label-text">How many of you are coming?</span>
-          <input type="number" id="guests" name="guests" min="1" max="50"
-                 inputmode="numeric" placeholder="2" value="" />
-        </label>
+          <!-- balloons trailing from the wagon -->
+          <g class="balloons-svg">
+            <path d="M270 188 q6 -30 -2 -54" stroke="#cda9a6" stroke-width="1.4" fill="none"/>
+            <path d="M298 188 q-2 -34 4 -60" stroke="#a9c2d9" stroke-width="1.4" fill="none"/>
+            <path d="M324 188 q8 -28 -2 -52" stroke="#d9c7a0" stroke-width="1.4" fill="none"/>
+            <ellipse cx="268" cy="120" rx="15" ry="18" fill="#E15B53"/>
+            <ellipse cx="302" cy="112" rx="15" ry="18" fill="#4A95D6"/>
+            <ellipse cx="322" cy="124" rx="15" ry="18" fill="#F4C84A"/>
+            <ellipse cx="263" cy="114" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
+            <ellipse cx="297" cy="106" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
+            <ellipse cx="317" cy="118" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
+          </g>
 
-        <label class="field">
-          <span class="label-text">A note for us <span class="optional">(allergies, a birthday wish, anything!)</span></span>
-          <textarea id="note" name="note" rows="3"
-                    placeholder="We can't wait! 🥳"></textarea>
-        </label>
+          <!-- coupling -->
+          <rect x="196" y="206" width="48" height="5" rx="2" fill="#3a4750"/>
 
-        <p class="error" id="error" role="alert" hidden></p>
+          <!-- wagon (tender) -->
+          <rect x="238" y="182" width="96" height="30" rx="6" fill="#E15B53"/>
+          <rect x="238" y="182" width="96" height="9" rx="4" fill="#cf4f47"/>
+          <circle cx="262" cy="216" r="11" fill="#34404a"/><circle cx="262" cy="216" r="4" fill="#cdd6dd"/>
+          <circle cx="310" cy="216" r="11" fill="#34404a"/><circle cx="310" cy="216" r="4" fill="#cdd6dd"/>
 
-        <button type="submit" class="submit" id="submitBtn">
-          <span class="btn-label">Send my RSVP</span>
-        </button>
+          <!-- engine buffer beam -->
+          <rect x="54" y="198" width="160" height="10" rx="3" fill="#D94F47"/>
 
-        <p class="rsvp-by" id="rsvpBy">Kindly reply soon</p>
-      </form>
-    </section>
+          <!-- engine body -->
+          <rect x="66" y="150" width="132" height="50" rx="15" fill="url(#engine)"/>
+          <!-- yellow lining -->
+          <rect x="66" y="186" width="132" height="5" fill="#F4C84A"/>
 
-    <!-- ---------- Thank-you (revealed after submit) ---------- -->
-    <section class="thanks" id="thanks" hidden>
-      <div class="thanks-emoji" id="thanksEmoji">🎉</div>
-      <h2 class="thanks-title" id="thanksTitle">Hooray — you're on the list!</h2>
-      <p class="thanks-msg" id="thanksMsg">Thank you for letting us know. We can't wait to celebrate with you!</p>
+          <!-- cab -->
+          <rect x="156" y="124" width="46" height="76" rx="11" fill="url(#engine)"/>
+          <rect x="166" y="136" width="27" height="25" rx="5" fill="#D2ECFF"/>
 
-      <div class="cal" id="calBox" hidden>
-        <p class="cal-label">Pop it in your calendar so you don't forget 🗓️</p>
-        <div class="cal-btns">
-          <a class="cal-btn" id="calGoogle" target="_blank" rel="noopener">Google Calendar</a>
-          <a class="cal-btn" id="calIcs" download>Apple / Outlook</a>
+          <!-- dome -->
+          <rect x="146" y="138" width="16" height="14" rx="6" fill="#2c2c2c"/>
+          <!-- funnel -->
+          <path d="M104 150 L132 150 L126 124 L110 124 Z" fill="#2c2c2c"/>
+          <ellipse cx="118" cy="124" rx="12" ry="4" fill="#3c3c3c"/>
+
+          <!-- boiler face -->
+          <circle cx="90" cy="176" r="24" fill="#EAF4FD"/>
+          <circle cx="90" cy="176" r="24" fill="none" stroke="#2364A2" stroke-width="3.5"/>
+          <circle cx="82" cy="172" r="3.2" fill="#39454f"/>
+          <circle cx="98" cy="172" r="3.2" fill="#39454f"/>
+          <path d="M80 183 Q90 192 100 183" stroke="#39454f" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <circle cx="78" cy="181" r="3.2" fill="#f3b0ab" opacity="0.6"/>
+          <circle cx="102" cy="181" r="3.2" fill="#f3b0ab" opacity="0.6"/>
+
+          <!-- wheels -->
+          <circle cx="96"  cy="210" r="16" fill="#34404a"/><circle cx="96"  cy="210" r="6" fill="#cdd6dd"/>
+          <circle cx="150" cy="210" r="16" fill="#34404a"/><circle cx="150" cy="210" r="6" fill="#cdd6dd"/>
+          <circle cx="190" cy="212" r="11" fill="#34404a"/><circle cx="190" cy="212" r="4" fill="#cdd6dd"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="content">
+      <!-- ---------- Invitation ---------- -->
+      <section class="invite" id="invite">
+        <p class="eyebrow">You are warmly invited</p>
+
+        <h1 class="title">
+          <span class="honoree" id="honoree">Bear</span>
+          <span class="age-line" id="ageLine">
+            <span id="tagline">is turning</span>
+            <span class="age" id="age">5</span>
+          </span>
+        </h1>
+
+        <div class="ornament" aria-hidden="true">
+          <span class="rule"></span><span class="mark">✦</span><span class="rule"></span>
         </div>
-      </div>
 
-      <button type="button" class="ghost" id="againBtn">Send another RSVP</button>
-    </section>
+        <p class="intro" id="intro">We'd be over the moon if you'd come celebrate with us!</p>
+
+        <ul class="details">
+          <li><span class="d-label">When</span><span class="d-value" id="date">Saturday</span></li>
+          <li><span class="d-label">Time</span><span class="d-value" id="time">2:00 in the afternoon</span></li>
+          <li><span class="d-label">Where</span><span class="d-value" id="location">The Park</span></li>
+          <li><span class="d-label">Parking</span><span class="d-value" id="parking"></span></li>
+          <li><span class="d-label">Food</span><span class="d-value" id="food"></span></li>
+          <li><span class="d-label">Fun &amp; Games</span><span class="d-value" id="fun"></span></li>
+        </ul>
+
+        <!-- Shown instead of the form once RSVPs have closed -->
+        <p class="closed" id="closedNotice" hidden></p>
+
+        <!-- ---------- RSVP form ---------- -->
+        <form class="rsvp" id="rsvpForm" novalidate>
+          <h2 class="rsvp-heading">Kindly RSVP</h2>
+
+          <label class="field">
+            <span class="label-text">Your name</span>
+            <input type="text" id="name" name="name" autocomplete="name"
+                   placeholder="e.g. The Garcia family" required />
+          </label>
+
+          <fieldset class="field attending">
+            <legend class="label-text">Can you make it?</legend>
+            <div class="choices">
+              <label class="choice">
+                <input type="radio" name="attending" value="yes" required />
+                <span class="pill">Joyfully accept</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="attending" value="maybe" />
+                <span class="pill">Perhaps</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="attending" value="no" />
+                <span class="pill">Regretfully decline</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <label class="field" id="guestsField">
+            <span class="label-text">How many of you are coming?</span>
+            <input type="number" id="guests" name="guests" min="1" max="50"
+                   inputmode="numeric" placeholder="2" value="" />
+          </label>
+
+          <label class="field">
+            <span class="label-text">A note for us <span class="optional">(allergies, a birthday wish, anything!)</span></span>
+            <textarea id="note" name="note" rows="3"
+                      placeholder="We can't wait! 🥳"></textarea>
+          </label>
+
+          <p class="error" id="error" role="alert" hidden></p>
+
+          <button type="submit" class="submit" id="submitBtn">
+            <span class="btn-label">Send my RSVP</span>
+          </button>
+
+          <p class="rsvp-by" id="rsvpBy">Kindly reply soon</p>
+        </form>
+      </section>
+
+      <!-- ---------- Thank-you (revealed after submit) ---------- -->
+      <section class="thanks" id="thanks" hidden>
+        <div class="thanks-emoji" id="thanksEmoji">🎉</div>
+        <h2 class="thanks-title" id="thanksTitle">Hooray — you're on the list!</h2>
+        <p class="thanks-msg" id="thanksMsg">Thank you for letting us know. We can't wait to celebrate with you!</p>
+
+        <div class="cal" id="calBox" hidden>
+          <p class="cal-label">Pop it in your calendar so you don't forget 🗓️</p>
+          <div class="cal-btns">
+            <a class="cal-btn" id="calGoogle" target="_blank" rel="noopener">Google Calendar</a>
+            <a class="cal-btn" id="calIcs" download>Apple / Outlook</a>
+          </div>
+        </div>
+
+        <button type="button" class="ghost" id="againBtn">Send another RSVP</button>
+      </section>
+    </div>
   </main>
 
   <footer class="footer">made with 💛 for someone special</footer>

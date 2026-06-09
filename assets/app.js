@@ -262,7 +262,7 @@
   var ctx = canvas.getContext("2d");
   var pieces = [];
   var rafId = null;
-  var colors = ["#C9A24B", "#E0C883", "#A8843A", "#FBF8F1", "#163D31"];
+  var colors = ["#3B86CC", "#E15B53", "#F4C84A", "#8DBE82", "#FFFFFF"];
 
   function resize() {
     canvas.width = window.innerWidth;
