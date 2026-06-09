@@ -477,12 +477,13 @@ textarea { resize: vertical; min-height: 60px; }
   text-align: center;
 }
 
-/* ---------- Gift note (a light closing line under the details) ---------- */
+/* ---------- Gift note (a small note under the "Kindly RSVP" heading) ---------- */
 .giftnote {
-  margin: 18px auto 2px;
-  padding: 0 6px;
+  margin: 2px auto 20px;
+  padding: 0 4px 16px;
   max-width: 46ch;
   text-align: center;
+  border-bottom: 1px solid var(--line);
 }
 .gift-label {
   display: block;
@@ -490,16 +491,16 @@ textarea { resize: vertical; min-height: 60px; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 0.7rem;
+  font-size: 0.64rem;
   color: var(--blue-deep);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .gift-text {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
-  font-size: 1.18rem;
-  line-height: 1.5;
+  font-size: 1.02rem;
+  line-height: 1.45;
   color: var(--ink-soft);
 }
 

@@ -64,15 +64,15 @@ window.EVENT_CONFIG = {
     fields: {
       name:      "entry.2121458455",
       attending: "entry.194977389",
-      guests:    "entry.1121823512",   // the existing "How Many" question (required)
       note:      "entry.1587321885",
 
-      // OPTIONAL — to get adults & kids in their OWN columns, add two more
-      // "Short answer" questions to your Google Form (e.g. "Adults" & "Kids")
-      // and paste their entry IDs here. Left blank, the site instead writes a
-      // readable "2 adults, 1 kid" summary into the "How Many" column above.
-      guestsAdults: "",
-      guestsKids:   "",
+      // The form has separate "How Many Adultes" and "How Many Kids" questions
+      // (both required), so each count goes to its own column.
+      guestsAdults: "entry.1121823512",   // "How Many Adultes"
+      guestsKids:   "entry.393165136",    // "How Many Kids"
+
+      // No single "how many" question on the form anymore — leave blank.
+      guests:    "",
     },
 
     // These must EXACTLY match the option text in your Google Form's
