@@ -39,14 +39,24 @@
     <span class="cloud c1"></span>
     <span class="cloud c2"></span>
     <span class="cloud c3"></span>
+    <span class="cloud c4"></span>
+    <span class="cloud c5"></span>
+  </div>
+
+  <!-- Balloons floating gently up the page -->
+  <div class="skyfloat" aria-hidden="true">
+    <span class="floatb fb1"></span>
+    <span class="floatb fb2"></span>
+    <span class="floatb fb3"></span>
+    <span class="floatb fb4"></span>
   </div>
 
   <main class="card" id="card">
 
-    <!-- ---------- Hero: a friendly little train ---------- -->
+    <!-- ---------- Hero: a friendly little steam engine ---------- -->
     <div class="hero" aria-hidden="true">
       <svg class="hero-svg" viewBox="0 0 600 280" role="img" preserveAspectRatio="xMidYMax meet"
-           aria-label="A cheerful blue steam engine chugging along, pulling balloons">
+           aria-label="A cheerful blue steam tank engine chugging along, pulling a wagon of balloons">
         <defs>
           <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stop-color="#BFE3FB"/>
@@ -60,10 +70,10 @@
             <stop offset="0" stop-color="#B6D9AC"/>
             <stop offset="1" stop-color="#A2CD97"/>
           </linearGradient>
-          <g id="sp16" stroke="#5b6a74" stroke-width="2" stroke-linecap="round">
-            <line x1="-13" y1="0" x2="13" y2="0"/>
-            <line x1="-6.5" y1="-11.3" x2="6.5" y2="11.3"/>
-            <line x1="-6.5" y1="11.3" x2="6.5" y2="-11.3"/>
+          <g id="sp17" stroke="#5b6a74" stroke-width="2" stroke-linecap="round">
+            <line x1="-14" y1="0" x2="14" y2="0"/>
+            <line x1="-7" y1="-12.1" x2="7" y2="12.1"/>
+            <line x1="-7" y1="12.1" x2="7" y2="-12.1"/>
           </g>
           <g id="sp11" stroke="#5b6a74" stroke-width="1.6" stroke-linecap="round">
             <line x1="-8.5" y1="0" x2="8.5" y2="0"/>
@@ -75,9 +85,19 @@
         <!-- sky -->
         <rect x="0" y="0" width="600" height="280" fill="url(#sky)"/>
 
-        <!-- sun -->
+        <!-- sun with rotating rays -->
+        <g class="sunrays" stroke="#FBE08A" stroke-width="3" stroke-linecap="round" opacity="0.7">
+          <line x1="559" y1="58" x2="572" y2="58"/>
+          <line x1="549" y1="82" x2="558" y2="91"/>
+          <line x1="525" y1="92" x2="525" y2="105"/>
+          <line x1="501" y1="82" x2="492" y2="91"/>
+          <line x1="491" y1="58" x2="478" y2="58"/>
+          <line x1="501" y1="34" x2="492" y2="25"/>
+          <line x1="525" y1="24" x2="525" y2="11"/>
+          <line x1="549" y1="34" x2="558" y2="25"/>
+        </g>
         <circle cx="525" cy="58" r="30" fill="#FBE08A"/>
-        <circle cx="525" cy="58" r="42" fill="#FBE08A" opacity="0.25"/>
+        <circle cx="525" cy="58" r="42" fill="#FBE08A" opacity="0.22"/>
 
         <!-- bunting -->
         <g class="bunting" opacity="0.95">
@@ -104,6 +124,14 @@
             <ellipse cx="424" cy="50" rx="20" ry="13"/>
           </g>
         </g>
+
+        <!-- gliding birds -->
+        <g transform="translate(0,58)"><g class="bird bird-a">
+          <path d="M-9 0 q4.5 -5 9 0 q4.5 -5 9 0" fill="none" stroke="#6b7a86" stroke-width="2" stroke-linecap="round"/>
+        </g></g>
+        <g transform="translate(0,98)"><g class="bird bird-b">
+          <path d="M-8 0 q4 -4.5 8 0 q4 -4.5 8 0" fill="none" stroke="#6b7a86" stroke-width="1.8" stroke-linecap="round"/>
+        </g></g>
 
         <!-- rolling hills -->
         <path d="M0 232 Q150 188 330 220 T600 210 L600 280 L0 280 Z" fill="url(#hill1)"/>
@@ -134,66 +162,89 @@
 
         <!-- THE TRAIN -->
         <g class="train">
-          <!-- smoke -->
+          <!-- steam from the funnel -->
           <g class="smoke" fill="#ffffff">
-            <circle class="puff p1" cx="120" cy="150" r="8"/>
-            <circle class="puff p2" cx="128" cy="128" r="10"/>
-            <circle class="puff p3" cx="120" cy="104" r="12"/>
+            <circle class="puff p1" cx="116" cy="108" r="8"/>
+            <circle class="puff p2" cx="122" cy="92"  r="10"/>
+            <circle class="puff p3" cx="115" cy="74"  r="12"/>
           </g>
 
-          <!-- balloons trailing from the wagon -->
+          <!-- balloons rising from the wagon -->
           <g class="balloons-svg">
-            <path d="M270 188 q6 -30 -2 -54" stroke="#cda9a6" stroke-width="1.4" fill="none"/>
-            <path d="M298 188 q-2 -34 4 -60" stroke="#a9c2d9" stroke-width="1.4" fill="none"/>
-            <path d="M324 188 q8 -28 -2 -52" stroke="#d9c7a0" stroke-width="1.4" fill="none"/>
-            <ellipse cx="268" cy="120" rx="15" ry="18" fill="#E15B53"/>
-            <ellipse cx="302" cy="112" rx="15" ry="18" fill="#4A95D6"/>
-            <ellipse cx="322" cy="124" rx="15" ry="18" fill="#F4C84A"/>
-            <ellipse cx="263" cy="114" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
-            <ellipse cx="297" cy="106" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
-            <ellipse cx="317" cy="118" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
+            <path d="M272 184 q6 -30 -2 -54" stroke="#cda9a6" stroke-width="1.4" fill="none"/>
+            <path d="M300 184 q-2 -34 4 -60" stroke="#a9c2d9" stroke-width="1.4" fill="none"/>
+            <path d="M326 184 q8 -28 -2 -52" stroke="#d9c7a0" stroke-width="1.4" fill="none"/>
+            <ellipse cx="270" cy="116" rx="15" ry="18" fill="#E15B53"/>
+            <ellipse cx="304" cy="108" rx="15" ry="18" fill="#4A95D6"/>
+            <ellipse cx="324" cy="120" rx="15" ry="18" fill="#F4C84A"/>
+            <ellipse cx="265" cy="110" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
+            <ellipse cx="299" cy="102" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
+            <ellipse cx="319" cy="114" rx="5" ry="6" fill="#ffffff" opacity="0.4"/>
           </g>
 
-          <!-- coupling -->
-          <rect x="196" y="206" width="48" height="5" rx="2" fill="#3a4750"/>
+          <!-- open wagon -->
+          <rect x="240" y="180" width="98" height="30" rx="6" fill="#E15B53"/>
+          <rect x="240" y="180" width="98" height="9"  rx="4" fill="#cf4f47"/>
+          <g transform="translate(264,228)"><g class="wheel"><circle r="11" fill="#34404a"/><use href="#sp11"/><circle r="4" fill="#c0392b"/></g></g>
+          <g transform="translate(312,228)"><g class="wheel"><circle r="11" fill="#34404a"/><use href="#sp11"/><circle r="4" fill="#c0392b"/></g></g>
 
-          <!-- wagon (tender) -->
-          <rect x="238" y="182" width="96" height="30" rx="6" fill="#E15B53"/>
-          <rect x="238" y="182" width="96" height="9" rx="4" fill="#cf4f47"/>
-          <g transform="translate(262,216)"><g class="wheel"><circle r="11" fill="#34404a"/><use href="#sp11"/><circle r="4" fill="#cdd6dd"/></g></g>
-          <g transform="translate(310,216)"><g class="wheel"><circle r="11" fill="#34404a"/><use href="#sp11"/><circle r="4" fill="#cdd6dd"/></g></g>
+          <!-- coupling bar between engine and wagon -->
+          <rect x="212" y="214" width="34" height="5" rx="2" fill="#2f3b44"/>
 
-          <!-- engine buffer beam -->
-          <rect x="54" y="198" width="160" height="10" rx="3" fill="#D94F47"/>
+          <!-- running board / footplate -->
+          <rect x="52" y="200" width="166" height="9" rx="2" fill="#22303d"/>
 
-          <!-- engine body -->
-          <rect x="66" y="150" width="132" height="50" rx="15" fill="url(#engine)"/>
-          <!-- yellow lining -->
-          <rect x="66" y="186" width="132" height="5" fill="#F4C84A"/>
+          <!-- front buffer beam + buffers -->
+          <rect x="50" y="180" width="12" height="28" rx="2" fill="#D94F47"/>
+          <rect x="40" y="184" width="12" height="6" rx="3" fill="#c4ccd2"/>
+          <rect x="40" y="198" width="12" height="6" rx="3" fill="#c4ccd2"/>
+          <circle cx="40" cy="187" r="4" fill="#dbe0e4"/>
+          <circle cx="40" cy="201" r="4" fill="#dbe0e4"/>
 
-          <!-- cab -->
-          <rect x="156" y="124" width="46" height="76" rx="11" fill="url(#engine)"/>
-          <rect x="166" y="136" width="27" height="25" rx="5" fill="#D2ECFF"/>
+          <!-- boiler (long cylinder; left end is the smokebox) -->
+          <rect x="66" y="150" width="130" height="46" rx="23" fill="url(#engine)"/>
+          <rect x="78" y="190" width="118" height="4" fill="#F4C84A"/>
 
-          <!-- dome -->
-          <rect x="146" y="138" width="16" height="14" rx="6" fill="#2c2c2c"/>
+          <!-- side tank with number 1 -->
+          <rect x="104" y="158" width="66" height="40" rx="6" fill="url(#engine)"/>
+          <rect x="104" y="158" width="66" height="3" fill="#F4C84A"/>
+          <circle cx="137" cy="180" r="13" fill="#fffdf6" stroke="#1f5285" stroke-width="2"/>
+          <text x="137" y="186" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="18" font-weight="600" fill="#1f5285">1</text>
+
           <!-- funnel -->
-          <path d="M104 150 L132 150 L126 124 L110 124 Z" fill="#2c2c2c"/>
-          <ellipse cx="118" cy="124" rx="12" ry="4" fill="#3c3c3c"/>
+          <path d="M108 150 L126 150 L122 120 L112 120 Z" fill="#2c2c2c"/>
+          <rect x="104" y="112" width="26" height="9" rx="3" fill="#2c2c2c"/>
 
-          <!-- boiler face -->
-          <circle cx="90" cy="176" r="24" fill="#EAF4FD"/>
-          <circle cx="90" cy="176" r="24" fill="none" stroke="#2364A2" stroke-width="3.5"/>
-          <circle cx="82" cy="172" r="3.2" fill="#39454f"/>
-          <circle cx="98" cy="172" r="3.2" fill="#39454f"/>
-          <path d="M80 183 Q90 192 100 183" stroke="#39454f" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-          <circle cx="78" cy="181" r="3.2" fill="#f3b0ab" opacity="0.6"/>
-          <circle cx="102" cy="181" r="3.2" fill="#f3b0ab" opacity="0.6"/>
+          <!-- steam dome (brass top) + safety valve -->
+          <rect x="140" y="134" width="24" height="18" rx="9" fill="#34404a"/>
+          <ellipse cx="152" cy="135" rx="12" ry="3.5" fill="#C9A24B"/>
+          <rect x="170" y="140" width="12" height="12" rx="5" fill="#34404a"/>
 
-          <!-- wheels (spinning) -->
-          <g transform="translate(96,210)"><g class="wheel"><circle r="16" fill="#34404a"/><use href="#sp16"/><circle r="6" fill="#cdd6dd"/></g></g>
-          <g transform="translate(150,210)"><g class="wheel"><circle r="16" fill="#34404a"/><use href="#sp16"/><circle r="6" fill="#cdd6dd"/></g></g>
-          <g transform="translate(190,212)"><g class="wheel"><circle r="11" fill="#34404a"/><use href="#sp11"/><circle r="4" fill="#cdd6dd"/></g></g>
+          <!-- cab: roof, body, window -->
+          <rect x="160" y="116" width="60" height="10" rx="4" fill="#1f5285"/>
+          <rect x="166" y="122" width="48" height="80" rx="6" fill="url(#engine)"/>
+          <rect x="176" y="132" width="30" height="30" rx="5" fill="#CFE9FF" stroke="#1f5285" stroke-width="2"/>
+
+          <!-- smokebox face -->
+          <circle cx="86" cy="173" r="21" fill="#EAF4FD"/>
+          <circle cx="86" cy="173" r="21" fill="none" stroke="#1f5285" stroke-width="3.5"/>
+          <circle cx="79" cy="169" r="3" fill="#39454f"/>
+          <circle cx="93" cy="169" r="3" fill="#39454f"/>
+          <path d="M77 179 Q86 188 95 179" stroke="#39454f" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <circle cx="75" cy="178" r="3" fill="#f3b0ab" opacity="0.6"/>
+          <circle cx="97" cy="178" r="3" fill="#f3b0ab" opacity="0.6"/>
+
+          <!-- driving wheels (spinning, with crank pins) -->
+          <g transform="translate(92,228)"><g class="wheel"><circle r="17" fill="#34404a"/><use href="#sp17"/><circle r="6" fill="#c0392b"/><circle cx="0" cy="9" r="2.6" fill="#aeb8c0"/></g></g>
+          <g transform="translate(134,228)"><g class="wheel"><circle r="17" fill="#34404a"/><use href="#sp17"/><circle r="6" fill="#c0392b"/><circle cx="0" cy="9" r="2.6" fill="#aeb8c0"/></g></g>
+          <g transform="translate(176,228)"><g class="wheel"><circle r="17" fill="#34404a"/><use href="#sp17"/><circle r="6" fill="#c0392b"/><circle cx="0" cy="9" r="2.6" fill="#aeb8c0"/></g></g>
+
+          <!-- coupling rod (orbits with the wheels) -->
+          <g class="rod">
+            <rect x="84" y="225" width="100" height="6" rx="3" fill="#8893a0"/>
+            <circle cx="92"  cy="228" r="3.4" fill="#aeb8c0"/>
+            <circle cx="176" cy="228" r="3.4" fill="#aeb8c0"/>
+          </g>
         </g>
       </svg>
     </div>
@@ -225,6 +276,12 @@
           <li><span class="d-label">Food</span><span class="d-value" id="food"></span></li>
           <li><span class="d-label">Fun &amp; Games</span><span class="d-value" id="fun"></span></li>
         </ul>
+
+        <!-- Gift note (optional; hidden if blank in config) -->
+        <div class="giftnote" id="giftnote" hidden>
+          <span class="gift-label">A note on gifts</span>
+          <p class="gift-text" id="giftText"></p>
+        </div>
 
         <!-- Shown instead of the form once RSVPs have closed -->
         <p class="closed" id="closedNotice" hidden></p>
