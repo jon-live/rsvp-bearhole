@@ -75,7 +75,7 @@ body {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 540px;
+  max-width: 600px;
   min-width: 0;                /* allow shrink below the SVG's intrinsic width */
   flex-shrink: 0;              /* never shrink vertically (would clip the form) */
   background: var(--cream);
@@ -94,17 +94,26 @@ body {
 .hero { line-height: 0; }
 .hero-svg { display: block; width: 100%; max-width: 100%; height: auto; }
 
-.train { transform-box: fill-box; transform-origin: center; animation: bob 3.6s ease-in-out infinite; }
-@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+.train { transform-box: fill-box; transform-origin: center; animation: chug 0.45s ease-in-out infinite; }
+@keyframes chug { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
 
+/* spinning wheels */
+.wheel { transform-box: fill-box; transform-origin: center; animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* scrolling sleepers — seamless because ties repeat every 50 units */
+.ties { animation: roll 0.9s linear infinite; }
+@keyframes roll { from { transform: translateX(0); } to { transform: translateX(-50px); } }
+
+/* steam puffs that rise and trail backward (engine faces left) */
 .smoke .puff { opacity: 0; transform-box: fill-box; transform-origin: center; }
-.smoke .p1 { animation: puff 3s ease-out infinite; }
-.smoke .p2 { animation: puff 3s ease-out infinite 0.55s; }
-.smoke .p3 { animation: puff 3s ease-out infinite 1.1s; }
+.smoke .p1 { animation: puff 1.8s ease-out infinite; }
+.smoke .p2 { animation: puff 1.8s ease-out infinite 0.6s; }
+.smoke .p3 { animation: puff 1.8s ease-out infinite 1.2s; }
 @keyframes puff {
-  0%   { opacity: 0; transform: translateY(0) scale(0.5); }
-  25%  { opacity: 0.85; }
-  100% { opacity: 0; transform: translateY(-24px) scale(1.3); }
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.45); }
+  25%  { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(26px, -30px) scale(1.5); }
 }
 .puffcloud { transform-box: fill-box; }
 .cl-a { animation: floatx 24s ease-in-out infinite; }
@@ -112,7 +121,7 @@ body {
 @keyframes floatx { 0%,100% { transform: translateX(0); } 50% { transform: translateX(12px); } }
 
 /* ---------- Content ---------- */
-.content { padding: 38px 42px 42px; text-align: center; }
+.content { padding: 48px 56px 50px; text-align: center; }
 
 .eyebrow {
   font-family: "Nunito", sans-serif;
@@ -130,9 +139,10 @@ body {
   display: block;
   font-family: "Cormorant Garamond", serif;
   font-weight: 600;
-  font-size: clamp(3.4rem, 14vw, 5rem);
+  font-size: clamp(3.8rem, 15vw, 6rem);
   color: var(--ink);
   letter-spacing: 0.01em;
+  line-height: 0.98;
 }
 .age-line {
   display: block;
@@ -140,8 +150,8 @@ body {
   font-style: italic;
   font-weight: 500;
   color: var(--ink-soft);
-  font-size: clamp(1.3rem, 5vw, 1.75rem);
-  margin-top: 10px;
+  font-size: clamp(1.45rem, 5.4vw, 2rem);
+  margin-top: 12px;
 }
 .age {
   font-family: "Fredoka", sans-serif;
@@ -163,25 +173,25 @@ body {
 
 .intro {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   line-height: 1.55;
   color: var(--ink);
-  margin: 0 auto 32px;
-  max-width: 32ch;
+  margin: 0 auto 36px;
+  max-width: 34ch;
 }
 
 /* ---------- Details ---------- */
 .details {
   list-style: none;
   margin: 0;
-  padding: 30px 4px;
+  padding: 34px 6px;
   display: grid;
-  gap: 22px;
+  gap: 24px;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   text-align: left;
 }
-.details li { display: grid; grid-template-columns: 92px 1fr; align-items: baseline; gap: 16px; }
+.details li { display: grid; grid-template-columns: 104px 1fr; align-items: baseline; gap: 18px; }
 .details li[hidden] { display: none; }
 .d-label {
   font-family: "Nunito", sans-serif;
@@ -194,7 +204,7 @@ body {
 }
 .d-value {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.32rem;
+  font-size: 1.45rem;
   font-weight: 500;
   color: var(--ink);
   line-height: 1.35;
@@ -421,6 +431,28 @@ textarea { resize: vertical; min-height: 76px; }
   .cal-btns { flex-direction: column; }
 }
 
+/* ---------- Sound toggle ---------- */
+.sound-toggle {
+  position: fixed;
+  top: 16px; right: 16px;
+  z-index: 70;
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.82);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 8px 20px -10px rgba(32,70,110,0.6);
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s, color 0.2s;
+}
+.sound-toggle:hover { transform: scale(1.07); }
+.sound-toggle[aria-pressed="true"] { background: var(--blue); border-color: var(--blue-deep); }
+.sound-toggle.playing { animation: soundpulse 0.9s ease-in-out infinite; }
+@keyframes soundpulse { 0%,100% { box-shadow: 0 8px 20px -10px rgba(32,94,156,0.7); } 50% { box-shadow: 0 8px 26px -6px rgba(32,94,156,0.95); } }
+
 @media (prefers-reduced-motion: reduce) {
-  .card, .thanks, .train, .smoke .puff, .puffcloud, .cloud { animation: none; }
+  .card, .thanks, .train, .wheel, .ties, .smoke .puff, .puffcloud, .cloud, .sound-toggle { animation: none; }
 }

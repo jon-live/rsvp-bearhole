@@ -235,6 +235,7 @@
     // Offer "add to calendar" to guests who are coming
     $("calBox").hidden = !(status === "yes" && calReady);
     burstConfetti();
+    Sound.tootIfOn();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -256,6 +257,92 @@
     error.hidden = false;
   }
   function hideError() { error.hidden = true; }
+
+  /* ---------- 3b. Train sounds (Web Audio, no asset files) ---------- */
+  var Sound = (function () {
+    var ctx, master, on = false, timer = null, beat = 0;
+    function ensure() {
+      if (ctx) return true;
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return false;
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = 0.16;
+      master.connect(ctx.destination);
+      return true;
+    }
+    function noise(dur) {
+      var n = Math.max(1, (ctx.sampleRate * dur) | 0);
+      var b = ctx.createBuffer(1, n, ctx.sampleRate);
+      var d = b.getChannelData(0);
+      for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+      return b;
+    }
+    // a single "chuff" of escaping steam
+    function chuff(t, strong) {
+      var src = ctx.createBufferSource();
+      src.buffer = noise(0.2);
+      var bp = ctx.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = strong ? 480 : 560;
+      bp.Q.value = 0.9;
+      var g = ctx.createGain();
+      var peak = strong ? 0.9 : 0.55;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(peak, t + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.17);
+      src.connect(bp); bp.connect(g); g.connect(master);
+      src.start(t); src.stop(t + 0.2);
+    }
+    // a warm two-tone whistle
+    function whistle() {
+      if (!ensure()) return;
+      if (ctx.state === "suspended") ctx.resume();
+      var t = ctx.currentTime;
+      var lp = ctx.createBiquadFilter();
+      lp.type = "lowpass"; lp.frequency.value = 1800;
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.28, t + 0.09);
+      g.gain.setValueAtTime(0.28, t + 0.55);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.0);
+      lp.connect(g); g.connect(master);
+      [740, 988].forEach(function (f, i) {
+        var o = ctx.createOscillator();
+        o.type = "sawtooth";
+        o.frequency.value = f + (i ? 6 : 0);
+        o.connect(lp); o.start(t); o.stop(t + 1.02);
+      });
+    }
+    function start() {
+      timer = setInterval(function () {
+        if (!ctx) return;
+        chuff(ctx.currentTime + 0.01, beat % 2 === 0); // chuff-CHUFF rhythm
+        beat++;
+      }, 450);
+    }
+    return {
+      toggle: function () {
+        if (!ensure()) return false;
+        if (ctx.state === "suspended") ctx.resume();
+        on = !on;
+        if (on) { whistle(); start(); }
+        else { clearInterval(timer); timer = null; }
+        return on;
+      },
+      tootIfOn: function () { if (on) whistle(); },
+    };
+  })();
+
+  var soundBtn = $("soundToggle");
+  if (soundBtn) {
+    soundBtn.addEventListener("click", function () {
+      var playing = Sound.toggle();
+      soundBtn.setAttribute("aria-pressed", playing ? "true" : "false");
+      soundBtn.classList.toggle("playing", playing);
+      soundBtn.querySelector(".sound-ico").textContent = playing ? "🔊" : "🔈";
+    });
+  }
 
   /* ---------- 4. Confetti (tiny canvas implementation) ---------- */
   var canvas = $("confetti");
