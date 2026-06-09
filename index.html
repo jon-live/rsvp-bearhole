@@ -28,12 +28,6 @@
   <!-- Confetti lives here -->
   <canvas id="confetti" aria-hidden="true"></canvas>
 
-  <!-- Tap to play gentle train sounds (off by default) -->
-  <button id="soundToggle" class="sound-toggle" type="button" aria-pressed="false"
-          aria-label="Play train sounds" title="Train sounds">
-    <span class="sound-ico">🔈</span>
-  </button>
-
   <!-- Decorative drifting clouds -->
   <div class="clouds" aria-hidden="true">
     <span class="cloud c1"></span>
@@ -49,6 +43,22 @@
     <span class="floatb fb2"></span>
     <span class="floatb fb3"></span>
     <span class="floatb fb4"></span>
+    <span class="floatb fb5"></span>
+    <span class="floatb fb6"></span>
+  </div>
+
+  <!-- More sky life: gliding birds, twinkling sparkles & a drifting kite -->
+  <div class="skydeco" aria-hidden="true">
+    <span class="bird2 bd1"></span>
+    <span class="bird2 bd2"></span>
+    <span class="bird2 bd3"></span>
+    <span class="sparkle sk1"></span>
+    <span class="sparkle sk2"></span>
+    <span class="sparkle sk3"></span>
+    <span class="sparkle sk4"></span>
+    <span class="sparkle sk5"></span>
+    <span class="sparkle sk6"></span>
+    <span class="kite kt1"><i class="kite-tail"></i></span>
   </div>
 
   <main class="card" id="card">
@@ -228,8 +238,10 @@
           <!-- smokebox face -->
           <circle cx="86" cy="173" r="21" fill="#EAF4FD"/>
           <circle cx="86" cy="173" r="21" fill="none" stroke="#1f5285" stroke-width="3.5"/>
-          <circle cx="79" cy="169" r="3" fill="#39454f"/>
-          <circle cx="93" cy="169" r="3" fill="#39454f"/>
+          <g class="eyes">
+            <circle cx="79" cy="169" r="3" fill="#39454f"/>
+            <circle cx="93" cy="169" r="3" fill="#39454f"/>
+          </g>
           <path d="M77 179 Q86 188 95 179" stroke="#39454f" stroke-width="2.6" fill="none" stroke-linecap="round"/>
           <circle cx="75" cy="178" r="3" fill="#f3b0ab" opacity="0.6"/>
           <circle cx="97" cy="178" r="3" fill="#f3b0ab" opacity="0.6"/>
