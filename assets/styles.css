@@ -213,13 +213,14 @@ body {
 .train { transform-box: fill-box; transform-origin: center; animation: chug 0.45s ease-in-out infinite; }
 @keyframes chug { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
 
-/* spinning wheels */
+/* spinning wheels — engine faces & travels LEFT, so wheels roll counter-clockwise */
 .wheel { transform-box: fill-box; transform-origin: center; animation: spin 0.9s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin { to { transform: rotate(-360deg); } }
 
-/* scrolling sleepers — seamless because ties repeat every 50 units */
+/* scrolling sleepers — ground slides RIGHT so the train reads as moving LEFT.
+   seamless because ties repeat every 50 units */
 .ties { animation: roll 0.9s linear infinite; }
-@keyframes roll { from { transform: translateX(0); } to { transform: translateX(-50px); } }
+@keyframes roll { from { transform: translateX(-50px); } to { transform: translateX(0); } }
 
 /* steam puffs that rise and trail backward (engine faces left) */
 .smoke .puff { opacity: 0; transform-box: fill-box; transform-origin: center; }
@@ -235,6 +236,16 @@ body {
 .cl-a { animation: floatx 24s ease-in-out infinite; }
 .cl-b { animation: floatx 30s ease-in-out infinite; }
 @keyframes floatx { 0%,100% { transform: translateX(0); } 50% { transform: translateX(12px); } }
+
+/* windmill sails turning */
+.millblades { transform-box: fill-box; transform-origin: center; animation: millspin 7s linear infinite; }
+@keyframes millspin { to { transform: rotate(360deg); } }
+
+/* sheep grazing — a gentle bob */
+.sheep { transform-box: fill-box; }
+.sheep-a { animation: graze 3s ease-in-out infinite; }
+.sheep-b { animation: graze 3.6s ease-in-out infinite 0.5s; }
+@keyframes graze { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 
 /* the engine blinks now and then */
 .eyes { transform-box: fill-box; transform-origin: center; animation: blink 5.5s ease-in-out infinite; }
@@ -435,9 +446,21 @@ textarea { resize: vertical; min-height: 76px; }
 .choice input:focus-visible + .pill { box-shadow: 0 0 0 3px rgba(59,134,204,0.3); }
 
 /* collapsing guests field */
-#guestsField { overflow: hidden; max-height: 140px; opacity: 1;
+#guestsField { overflow: hidden; max-height: 200px; opacity: 1;
   transition: max-height 0.35s ease, opacity 0.3s ease, margin 0.35s ease; }
 #guestsField.hidden { max-height: 0; opacity: 0; margin-bottom: 0; }
+
+/* adults / kids side by side */
+.guest-counts { display: flex; gap: 12px; }
+.guest-count { flex: 1; display: block; }
+.gc-label {
+  display: block;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
 
 .error {
   color: #c0392b;
@@ -611,6 +634,6 @@ textarea { resize: vertical; min-height: 76px; }
 @media (prefers-reduced-motion: reduce) {
   .card, .thanks, .train, .wheel, .ties, .rod, .smoke .puff, .puffcloud, .cloud,
   .sunrays, .bird, .floatb, .bird2, .bird2::before, .bird2::after,
-  .sparkle, .kite, .kite-tail, .eyes, .balloons-svg { animation: none; }
+  .sparkle, .kite, .kite-tail, .eyes, .balloons-svg, .millblades, .sheep { animation: none; }
   .sparkle { opacity: 0.5; }
 }

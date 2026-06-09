@@ -147,6 +147,49 @@
         <path d="M0 232 Q150 188 330 220 T600 210 L600 280 L0 280 Z" fill="url(#hill1)"/>
         <path d="M0 248 Q200 214 430 244 T600 238 L600 280 L0 280 Z" fill="#8DBE82"/>
 
+        <!-- little farmyard on the hills -->
+        <g class="farm">
+          <!-- red barn -->
+          <g>
+            <rect x="492" y="200" width="52" height="30" fill="#C7493F"/>
+            <path d="M488 200 L518 182 L548 200 Z" fill="#8f342c"/>
+            <rect x="510" y="212" width="14" height="18" fill="#FBF4E4"/>
+            <path d="M510 212 h14 M517 212 v18" stroke="#C7493F" stroke-width="1.4"/>
+            <rect x="496" y="205" width="8" height="8" fill="#FBF4E4"/>
+            <rect x="532" y="205" width="8" height="8" fill="#FBF4E4"/>
+          </g>
+          <!-- windmill with turning sails -->
+          <g>
+            <rect x="455" y="200" width="7" height="30" fill="#9b8059"/>
+            <g class="mill" transform="translate(458.5,200)">
+              <g class="millblades">
+                <rect x="-2" y="-24" width="4" height="24" rx="1" fill="#EDE6D6" stroke="#bcae92" stroke-width="0.8"/>
+                <rect x="0" y="-2" width="24" height="4" rx="1" fill="#EDE6D6" stroke="#bcae92" stroke-width="0.8"/>
+                <rect x="-2" y="0" width="4" height="24" rx="1" fill="#EDE6D6" stroke="#bcae92" stroke-width="0.8"/>
+                <rect x="-24" y="-2" width="24" height="4" rx="1" fill="#EDE6D6" stroke="#bcae92" stroke-width="0.8"/>
+              </g>
+              <circle r="3" fill="#7a6244"/>
+            </g>
+          </g>
+          <!-- grazing sheep -->
+          <g class="sheep sheep-a" transform="translate(368,228) scale(1.25)">
+            <ellipse cx="0" cy="0" rx="11" ry="8" fill="#FCFBF7" stroke="#d8d2c4" stroke-width="1"/>
+            <ellipse cx="4" cy="-6" rx="6.5" ry="5.5" fill="#FCFBF7" stroke="#d8d2c4" stroke-width="1"/>
+            <ellipse cx="-9" cy="-2" rx="5" ry="4.5" fill="#444851"/>
+            <circle cx="-11" cy="-3" r="1.1" fill="#fff"/>
+            <rect x="-3" y="6" width="2.2" height="6" fill="#444851"/>
+            <rect x="4" y="6" width="2.2" height="6" fill="#444851"/>
+          </g>
+          <g class="sheep sheep-b" transform="translate(420,234) scale(0.95)">
+            <ellipse cx="0" cy="0" rx="11" ry="8" fill="#FCFBF7" stroke="#d8d2c4" stroke-width="1"/>
+            <ellipse cx="4" cy="-6" rx="6.5" ry="5.5" fill="#FCFBF7" stroke="#d8d2c4" stroke-width="1"/>
+            <ellipse cx="-9" cy="-2" rx="5" ry="4.5" fill="#444851"/>
+            <circle cx="-11" cy="-3" r="1.1" fill="#fff"/>
+            <rect x="-3" y="6" width="2.2" height="6" fill="#444851"/>
+            <rect x="4" y="6" width="2.2" height="6" fill="#444851"/>
+          </g>
+        </g>
+
         <!-- railway track -->
         <g>
           <rect x="0" y="245" width="600" height="5" fill="#C8A878"/>
@@ -326,11 +369,21 @@
             </div>
           </fieldset>
 
-          <label class="field" id="guestsField">
-            <span class="label-text">How many of you are coming?</span>
-            <input type="number" id="guests" name="guests" min="1" max="50"
-                   inputmode="numeric" placeholder="2" value="" />
-          </label>
+          <fieldset class="field guests-split" id="guestsField">
+            <legend class="label-text">How many are coming?</legend>
+            <div class="guest-counts">
+              <label class="guest-count">
+                <span class="gc-label">Adults</span>
+                <input type="number" id="adults" name="adults" min="0" max="50"
+                       inputmode="numeric" placeholder="2" value="" />
+              </label>
+              <label class="guest-count">
+                <span class="gc-label">Kids</span>
+                <input type="number" id="kids" name="kids" min="0" max="50"
+                       inputmode="numeric" placeholder="1" value="" />
+              </label>
+            </div>
+          </fieldset>
 
           <label class="field">
             <span class="label-text">A note for us <span class="optional">(allergies, a birthday wish, anything!)</span></span>

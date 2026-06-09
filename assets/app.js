@@ -155,6 +155,16 @@
   var error = $("error");
   var submitBtn = $("submitBtn");
 
+  // "3" -> 3, blank/garbage/negative -> 0
+  function parseCount(v) {
+    var n = parseInt(String(v).trim(), 10);
+    return isNaN(n) || n < 0 ? 0 : n;
+  }
+  // 2,1 -> "2 adults, 1 kid"
+  function guestSummary(a, k) {
+    return a + " adult" + (a === 1 ? "" : "s") + ", " + k + " kid" + (k === 1 ? "" : "s");
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     hideError();
@@ -166,19 +176,22 @@
     if (!attendingEl) return showError("Let us know if you can make it!");
 
     var attending = attendingEl.value; // "yes" | "no" | "maybe"
-    var guestsVal = $("guests").value.trim();
+    var adults = parseCount($("adults").value);
+    var kids   = parseCount($("kids").value);
+    var total  = adults + kids;
 
-    // When coming (yes/maybe), "How Many" is required and must be at least 1.
-    if (attending !== "no") {
-      if (!guestsVal) return showError("Please tell us how many are coming 🙂");
-      if (!(Number(guestsVal) >= 1)) return showError("How many are coming? Please enter a number (1 or more).");
+    // When coming (yes/maybe), at least one guest is required.
+    if (attending !== "no" && total < 1) {
+      return showError("Please tell us how many adults & kids are coming 🙂");
     }
 
+    var coming = attending !== "no";
     var payload = {
       name: name,
       attending: attendingMap[attending] || attending,
-      // "How Many" is required in the form; send 0 when not coming.
-      guests: attending === "no" ? "0" : guestsVal,
+      adults: coming ? adults : 0,
+      kids:   coming ? kids : 0,
+      total:  coming ? total : 0,
       note: $("note").value.trim(),
     };
 
@@ -207,8 +220,22 @@
     var body = new URLSearchParams();
     if (fields.name)      body.append(fields.name, payload.name);
     if (fields.attending) body.append(fields.attending, payload.attending);
-    if (fields.guests && payload.guests) body.append(fields.guests, payload.guests);
-    if (fields.note && payload.note)     body.append(fields.note, payload.note);
+
+    // Guest counts. If you've added separate "adults" and "kids" questions to
+    // your form, set guestsAdults/guestsKids in config to get their own columns.
+    var splitFields = fields.guestsAdults && fields.guestsKids;
+    if (splitFields) {
+      body.append(fields.guestsAdults, String(payload.adults));
+      body.append(fields.guestsKids, String(payload.kids));
+    }
+    // The single "How Many" question is required. Send the total when split
+    // columns exist, otherwise a readable "2 adults, 1 kid" summary; "0" if not coming.
+    if (fields.guests) {
+      var guestsValue = payload.total === 0 ? "0"
+        : (splitFields ? String(payload.total) : guestSummary(payload.adults, payload.kids));
+      body.append(fields.guests, guestsValue);
+    }
+    if (fields.note && payload.note) body.append(fields.note, payload.note);
 
     // Google Forms doesn't send CORS headers, so we fire-and-forget.
     // The submission still records; we just can't read the response.
