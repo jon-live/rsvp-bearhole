@@ -379,13 +379,18 @@
     var N = { 0: 0, c: 261.63, d: 293.66, e: 329.63, f: 349.23, g: 392.00,
               a: 440.00, b: 493.88, C: 523.25, D: 587.33, E: 659.25,
               F: 698.46, G: 783.99 };
-    // a jolly 16-step phrase in C major (eighth notes), with a bass line
-    var MELODY = ["g", "g", "C", "E", "D", "C", "g", 0,
-                  "a", "a", "D", "F", "E", "D", "C", 0];
-    var BASS   = ["c", 0, "e", 0, "g", 0, "c", 0,
-                  "f", 0, "a", 0, "g", 0, "g", 0];
-    var TEMPO = 138;                 // bpm — bouncy
-    var EIGHTH = 30 / TEMPO;         // seconds per eighth note
+
+    // "Happy Birthday to You" (public domain since 2016) as a gentle
+    // music-box waltz. Each step is [note, beats]; a quarter note = 1 beat.
+    var SEQ = [
+      ["g", .5], ["g", .5], ["a", 1], ["g", 1], ["C", 1], ["b", 2],
+      ["g", .5], ["g", .5], ["a", 1], ["g", 1], ["D", 1], ["C", 2],
+      ["g", .5], ["g", .5], ["G", 1], ["E", 1], ["C", 1], ["b", 1], ["a", 2],
+      ["f", .5], ["f", .5], ["E", 1], ["C", 1], ["D", 1], ["C", 2],
+      [0, 2],                         // a little breath before it loops
+    ];
+    var TEMPO = 108;                  // bpm — gentle, sing-along pace
+    var BEAT = 60 / TEMPO;            // seconds per beat (quarter note)
 
     function ensure() {
       if (actx) return true;
@@ -393,34 +398,33 @@
       if (!AC) return false;
       actx = new AC();
       master = actx.createGain();
-      master.gain.value = 0.2;
+      master.gain.value = 0.22;
       master.connect(actx.destination);
       return true;
     }
-    // a soft melodic tone
-    function tone(freq, t, dur, type, peak) {
+    // a twinkly music-box chime: pure bell tone + a soft shimmer overtone
+    // and a warm sub-octave, all with a bell-like decay.
+    function chime(freq, t, beats) {
       if (!freq) return;
-      var o = actx.createOscillator(), g = actx.createGain();
+      var dur = beats * BEAT;
+      var ring = Math.max(0.7, Math.min(dur * 2.2, 2.4));   // notes ring out
+      var voices = [
+        { f: freq,       type: "triangle", peak: 0.26 },     // body
+        { f: freq * 2,   type: "sine",     peak: 0.10 },     // shimmer
+        { f: freq / 2,   type: "sine",     peak: 0.09 },     // warmth
+      ];
       var lp = actx.createBiquadFilter();
-      lp.type = "lowpass"; lp.frequency.value = 2400;
-      o.type = type; o.frequency.value = freq;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.linearRampToValueAtTime(peak, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(lp); lp.connect(g); g.connect(master);
-      o.start(t); o.stop(t + dur + 0.02);
-    }
-    // a gentle puff of steam for rhythm
-    function chuff(t) {
-      var n = (actx.sampleRate * 0.12) | 0;
-      var b = actx.createBuffer(1, n, actx.sampleRate);
-      var d = b.getChannelData(0);
-      for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
-      var src = actx.createBufferSource(); src.buffer = b;
-      var bp = actx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 500;
-      var g = actx.createGain(); g.gain.value = 0.09;
-      src.connect(bp); bp.connect(g); g.connect(master);
-      src.start(t); src.stop(t + 0.12);
+      lp.type = "lowpass"; lp.frequency.value = 3200;
+      lp.connect(master);
+      voices.forEach(function (v) {
+        var o = actx.createOscillator(), g = actx.createGain();
+        o.type = v.type; o.frequency.value = v.f;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(v.peak, t + 0.006);   // soft mallet hit
+        g.gain.exponentialRampToValueAtTime(0.0001, t + ring);
+        o.connect(g); g.connect(lp);
+        o.start(t); o.stop(t + ring + 0.02);
+      });
     }
     function whistle() {
       if (!ensure()) return;
@@ -441,12 +445,10 @@
     }
     // schedule notes a little ahead of time for steady timing
     function scheduler() {
-      while (nextTime < actx.currentTime + 0.2) {
-        var i = step % 16;
-        tone(N[MELODY[i]], nextTime, EIGHTH * 0.9, "triangle", 0.24);
-        if (BASS[i]) tone(N[BASS[i]] / 2, nextTime, EIGHTH * 1.7, "sine", 0.20);
-        if (i % 2 === 0) chuff(nextTime);
-        nextTime += EIGHTH;
+      while (nextTime < actx.currentTime + 0.3) {
+        var s = SEQ[step % SEQ.length];
+        chime(N[s[0]], nextTime, s[1]);
+        nextTime += s[1] * BEAT;
         step++;
       }
     }
