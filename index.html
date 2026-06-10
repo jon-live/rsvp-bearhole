@@ -25,6 +25,12 @@
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
+  <!-- Music toggle (kept visible so guests can always start/stop it) -->
+  <button type="button" id="musicToggle" class="music-toggle is-off"
+          aria-pressed="false" aria-label="Turn music on" title="Music">
+    <span class="music-icon" aria-hidden="true">♪</span>
+  </button>
+
   <!-- Confetti lives here -->
   <canvas id="confetti" aria-hidden="true"></canvas>
 

@@ -458,6 +458,10 @@
     }
     // schedule notes a little ahead of time for steady timing
     function scheduler() {
+      if (!on || actx.state !== "running") return;   // don't pile up while suspended
+      // If the clock jumped ahead (tab was backgrounded/suspended), catch up
+      // instead of dumping a burst of overdue notes all at once.
+      if (nextTime < actx.currentTime) nextTime = actx.currentTime + 0.05;
       while (nextTime < actx.currentTime + 0.3) {
         var i = step % 16;
         tone(N[MELODY[i]], nextTime, EIGHTH * 1.6, 0.24);
@@ -468,35 +472,69 @@
       }
     }
     return {
-      // Begin the music. Safe to call before any user gesture: the audio
-      // clock is frozen while suspended, so notes simply wait and start
-      // playing the instant the context is resumed (see resume()).
+      // Begin the music. Must be called inside a user gesture (browsers block
+      // audio until the page has been interacted with at least once).
       start: function () {
         if (!ensure()) return;
+        if (actx.state === "suspended") actx.resume();
         if (on) return;
         on = true;
-        if (actx.state === "suspended") actx.resume();
         step = 0; nextTime = actx.currentTime + 0.12;
         whistle();
-        lookahead = setInterval(scheduler, 40);
+        if (!lookahead) lookahead = setInterval(scheduler, 40);
       },
-      // Resume a context the browser left suspended (must run in a gesture).
-      resume: function () { if (actx && actx.state === "suspended") actx.resume(); },
+      stop: function () {
+        on = false;
+        if (lookahead) { clearInterval(lookahead); lookahead = null; }
+      },
+      // Resume a context the browser left suspended (e.g. after the tab was
+      // backgrounded). Keeps the loop alive without restarting the tune.
+      resume: function () {
+        if (on && actx && actx.state === "suspended") actx.resume();
+      },
+      isOn: function () { return on; },
       tootIfOn: function () { if (on) whistle(); },
     };
   })();
 
-  // Music is ON by default, but browsers block autoplay until the user
-  // interacts. Start the whole engine INSIDE the first gesture (most reliable
-  // path, esp. on iOS Safari) and then stop listening.
+  // Music is ON by default, but browsers block audio until the user interacts.
+  // Start the engine inside the first gesture (most reliable on iOS Safari).
+  var musicBtn = $("musicToggle");
+  function reflectMusic() {
+    if (!musicBtn) return;
+    var on = Sound.isOn();
+    musicBtn.classList.toggle("is-off", !on);
+    musicBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    musicBtn.setAttribute("aria-label", on ? "Turn music off" : "Turn music on");
+  }
+
   var GESTURES = ["pointerdown", "keydown", "touchstart", "click", "wheel", "scroll"];
   function startAudioOnce() {
     Sound.start();
+    reflectMusic();
     GESTURES.forEach(function (ev) { window.removeEventListener(ev, startAudioOnce); });
   }
   GESTURES.forEach(function (ev) {
     window.addEventListener(ev, startAudioOnce, { once: false, passive: true });
   });
+
+  // Keep the loop alive: mobile browsers suspend the audio context whenever the
+  // page is backgrounded/idle, and it won't resume on its own. Nudge it back on
+  // any further interaction and when the tab becomes visible again.
+  ["pointerdown", "touchstart", "click"].forEach(function (ev) {
+    window.addEventListener(ev, function () { Sound.resume(); }, { passive: true });
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) Sound.resume();
+  });
+
+  // The always-visible music button: explicit start/stop for guests.
+  if (musicBtn) {
+    musicBtn.addEventListener("click", function () {
+      if (Sound.isOn()) Sound.stop(); else Sound.start();
+      reflectMusic();
+    });
+  }
 
   /* ---------- 4. Confetti (tiny canvas implementation) ---------- */
   var canvas = $("confetti");

@@ -24,6 +24,57 @@
 /* stable gutter on both edges so a scrollbar can't push the card off-center */
 html { height: 100%; scrollbar-gutter: stable both-edges; }
 
+/* ---------- Music toggle (always visible) ---------- */
+.music-toggle {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--blue-deep);
+  box-shadow: 0 6px 16px -6px rgba(32, 70, 110, 0.4);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.music-toggle:hover { transform: scale(1.06); }
+.music-toggle:active { transform: scale(0.94); }
+.music-icon { font-size: 1.25rem; line-height: 1; }
+/* gentle pulse while playing */
+.music-toggle:not(.is-off) {
+  background: var(--blue);
+  color: #fff;
+  animation: musicpulse 1.6s ease-in-out infinite;
+}
+/* muted look: dim + a slash */
+.music-toggle.is-off { opacity: 0.85; }
+.music-toggle.is-off::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 26px;
+  height: 2px;
+  background: var(--red);
+  border-radius: 2px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+@keyframes musicpulse {
+  0%, 100% { box-shadow: 0 6px 16px -6px rgba(32, 70, 110, 0.4); }
+  50%      { box-shadow: 0 6px 22px -4px rgba(59, 134, 204, 0.85); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-toggle:not(.is-off) { animation: none; }
+}
+
 body {
   margin: 0;
   min-height: 100%;            /* grow with content so the page can scroll */
