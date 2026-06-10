@@ -19,7 +19,7 @@ window.EVENT_CONFIG = {
   /* ---- Good things to know (optional rows; blank "" to hide) -- */
   parking: "Street parking available nearby",
   food: "A proper spread for both adults and kids",
-  fun: "Games, toys, pool access, sensory play & playgrounds",
+  fun: "Games, toys, pool access, sensory play, playgrounds",
 
   /* ---- A gentle note on gifts (optional; blank "" to hide) --- */
   gifts: "Your presence is the best present! Please don't feel obligated to bring a gift. But if you'd love to give a little something, an Amazon or Target gift card — or a book for the birthday boy — would be wonderful.",
